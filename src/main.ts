@@ -9,8 +9,10 @@ import {
 } from './utils';
 
 async function run() {
-  const { urls, token } = getActionInputs();
-  console.log({ urls, token });
+  console.log('RUNNING FUNC');
+
+  // const { urls, token } = getActionInputs();
+  // console.log({ urls, token });
 
   // const octokit = getOctokit(token)
   // await installDependencies()
