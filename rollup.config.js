@@ -6,7 +6,7 @@ import json from '@rollup/plugin-json';
 export default {
   input: 'src/main.ts',
   output: {
-    dir: './lib',
+    dir: './dist',
     format: 'cjs',
   },
   plugins: [json(), typescript(), resolve(), commonjs()],
