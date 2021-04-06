@@ -4,10 +4,10 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 
 export default {
-  input: 'src/test.js',
+  input: 'src/main.ts',
   output: {
     dir: './dist',
     format: 'cjs',
   },
-  plugins: [json(), typescript(), resolve(), commonjs()],
+  plugins: [typescript(), json(), resolve(), commonjs()],
 };
