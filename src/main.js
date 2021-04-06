@@ -9,9 +9,8 @@ const {
 } = require('./utils');
 
 async function run() {
-  // const { urls, token } = await getActionInputs();
-  console.log({ token: await getActionInputs() });
-
+  const { urls, token } = getActionInputs();
+  console.log({ urls, token });
   // const octokit = getOctokit(token)
   // await installDependencies()
   // await buildAndServe()

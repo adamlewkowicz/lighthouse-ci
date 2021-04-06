@@ -1,9 +1,8 @@
-import lighthouse from 'lighthouse';
-// import * as chromeLauncher from 'chrome-launcher';
-import { getInput } from '@actions/core';
-import { exec } from '@actions/exec';
-import { context, getOctokit } from '@actions/github';
-
+const lighthouse = require('lighthouse');
+// import * as chromeLauncher = require( 'chrome-launcher');
+const { getInput } = require('@actions/core');
+const { exec } = require('@actions/exec');
+const { context, getOctokit } = require('@actions/github');
 export const pullRequest = context.payload.pull_request;
 
 if (!pullRequest) {
