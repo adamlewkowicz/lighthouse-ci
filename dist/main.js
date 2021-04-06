@@ -7237,7 +7237,8 @@ const { getOctokit, context } = github;
 async function run() {
   const { urls, token } = getActionInputs();
   console.log({ urls, token });
-  getOctokit(token);
+  const octokit = getOctokit(token);
+  await createComment(octokit, `Lighthouse CI Result`);
   await installDependencies();
   await buildAndServe();
   // const lighthouseResultCurrent = await getLighthouseResult(urls[0])
@@ -7245,7 +7246,6 @@ async function run() {
   await installDependencies();
   await buildAndServe();
   // const lighthouseResultBase = await getLighthouseResult(urls[0])
-  // await createComment(octokit, `Lighthouse CI Result`)
 }
 
 const getActionInputs = () => ({
@@ -7253,7 +7253,10 @@ const getActionInputs = () => ({
   token: getInput('repo-token', { required: true }),
 });
 
-const installDependencies = () => exec('npm install');
+const installDependencies = () => {
+  console.log('Install Dependencies');
+  return exec('npm install');
+};
 
 const buildAndServe = () => exec('npm run build:serve');
 
@@ -7288,6 +7291,14 @@ const checkoutBaseBranch = async () => {
   } catch (e) {
     await exec(`git reset --hard ${pullRequest.base.sha}`);
   }
+};
+
+const createComment = async (octokit, content) => {
+  await octokit.issues.createComment({
+    ...context.repo,
+    issue_number: pullRequest.number,
+    body: content,
+  });
 };
 
 run();
