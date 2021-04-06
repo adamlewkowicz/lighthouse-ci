@@ -1,16 +1,7 @@
-import { getOctokit } from '@actions/github';
-import {
-  buildAndServe,
-  checkoutBaseBranch,
-  createComment,
-  getActionInputs,
-  getLighthouseResult,
-  installDependencies,
-} from './utils';
+import { getInput } from '@actions/core';
 
 async function run() {
-  const { urls, token } = getActionInputs();
-  console.log({ urls, token });
+  console.log({ token: getInput('repo-token', { required: true }) });
 
   // const octokit = getOctokit(token)
   // await installDependencies()
