@@ -1,28 +1,26 @@
-import {getOctokit} from '@actions/github'
+import { getOctokit } from '@actions/github';
 import {
   buildAndServe,
   checkoutBaseBranch,
   createComment,
   getActionInputs,
   getLighthouseResult,
-  installDependencies
-} from './utils'
+  installDependencies,
+} from './utils';
 
 async function run() {
-  const {urls, token} = getActionInputs()
-  const octokit = getOctokit(token)
+  const { urls, token } = getActionInputs();
+  console.log({ urls, token });
 
-  await installDependencies()
-  await buildAndServe()
-  const lighthouseResultCurrent = await getLighthouseResult(urls[0])
-
-  await checkoutBaseBranch()
-
-  await installDependencies()
-  await buildAndServe()
-  const lighthouseResultBase = await getLighthouseResult(urls[0])
-
-  await createComment(octokit, `Lighthouse CI Result`)
+  // const octokit = getOctokit(token)
+  // await installDependencies()
+  // await buildAndServe()
+  // const lighthouseResultCurrent = await getLighthouseResult(urls[0])
+  // await checkoutBaseBranch()
+  // await installDependencies()
+  // await buildAndServe()
+  // const lighthouseResultBase = await getLighthouseResult(urls[0])
+  // await createComment(octokit, `Lighthouse CI Result`)
 }
 
-run()
+run();
