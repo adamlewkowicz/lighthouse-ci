@@ -1,5 +1,5 @@
 import lighthouse from 'lighthouse';
-import * as chromeLauncher from 'chrome-launcher';
+// import * as chromeLauncher from 'chrome-launcher';
 import { getInput } from '@actions/core';
 import { exec } from '@actions/exec';
 import { context, getOctokit } from '@actions/github';
@@ -11,14 +11,15 @@ if (!pullRequest) {
 }
 
 export async function getLighthouseResult(url: string) {
-  const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
-  const { lhr: lighthouseResult } = await lighthouse(url, {
-    port: chrome.port,
-  });
+  const lighthouseResult = {};
+  // const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
+  // const { lhr: lighthouseResult } = await lighthouse(url, {
+  //   port: chrome.port,
+  // });
 
-  console.log({ lighthouseResult });
+  // console.log({ lighthouseResult });
 
-  await chrome.kill();
+  // await chrome.kill();
 
   return lighthouseResult;
 }
