@@ -9,5 +9,5 @@ export default {
     dir: './dist',
     format: 'cjs',
   },
-  plugins: [json(), typescript(), commonjs(), resolve()],
+  plugins: [json(), typescript(), resolve(), commonjs()],
 };
