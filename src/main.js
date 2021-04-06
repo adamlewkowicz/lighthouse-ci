@@ -1,11 +1,6 @@
 const { getInput } = require('@actions/core');
+const { exec } = require('@actions/exec');
 const { getOctokit } = require('@actions/github');
-const {
-  buildAndServe,
-  checkoutBaseBranch,
-  createComment,
-  getLighthouseResult,
-} = require('./utils');
 
 async function run() {
   const { urls, token } = getActionInputs();
