@@ -7232,7 +7232,7 @@ exports.getOctokit = getOctokit;
 
 const { getInput } = core;
 const { exec } = exec_1;
-const { getOctokit } = github;
+const { getOctokit, context } = github;
 
 async function run() {
   const { urls, token } = getActionInputs();
@@ -7242,8 +7242,8 @@ async function run() {
   await buildAndServe();
   // const lighthouseResultCurrent = await getLighthouseResult(urls[0])
   await checkoutBaseBranch();
-  // await installDependencies()
-  // await buildAndServe()
+  await installDependencies();
+  await buildAndServe();
   // const lighthouseResultBase = await getLighthouseResult(urls[0])
   // await createComment(octokit, `Lighthouse CI Result`)
 }

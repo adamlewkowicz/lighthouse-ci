@@ -1,6 +1,6 @@
 const { getInput } = require('@actions/core');
 const { exec } = require('@actions/exec');
-const { getOctokit } = require('@actions/github');
+const { getOctokit, context } = require('@actions/github');
 
 async function run() {
   const { urls, token } = getActionInputs();
@@ -10,8 +10,8 @@ async function run() {
   await buildAndServe();
   // const lighthouseResultCurrent = await getLighthouseResult(urls[0])
   await checkoutBaseBranch();
-  // await installDependencies()
-  // await buildAndServe()
+  await installDependencies();
+  await buildAndServe();
   // const lighthouseResultBase = await getLighthouseResult(urls[0])
   // await createComment(octokit, `Lighthouse CI Result`)
 }
