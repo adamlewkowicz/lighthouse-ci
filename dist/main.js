@@ -7199,6 +7199,7 @@ async function run() {
   const { urls, token } = getActionInputs();
   console.log({ urls, token });
   const octokit = getOctokit(token);
+  console.log('COMMENT');
   await createComment(octokit, `Lighthouse CI Result`);
   // await installDependencies();
   // await buildAndServe();
