@@ -7,12 +7,12 @@ async function run() {
   console.log({ urls, token });
   const octokit = getOctokit(token);
   await createComment(octokit, `Lighthouse CI Result`);
-  await installDependencies();
-  await buildAndServe();
-  // const lighthouseResultCurrent = await getLighthouseResult(urls[0])
-  await checkoutBaseBranch();
-  await installDependencies();
-  await buildAndServe();
+  // await installDependencies();
+  // await buildAndServe();
+  // // const lighthouseResultCurrent = await getLighthouseResult(urls[0])
+  // await checkoutBaseBranch();
+  // await installDependencies();
+  // await buildAndServe();
   // const lighthouseResultBase = await getLighthouseResult(urls[0])
 }
 
@@ -62,6 +62,7 @@ const checkoutBaseBranch = async () => {
 };
 
 const createComment = async (octokit, content) => {
+  console.log('Creating comment');
   await octokit.issues.createComment({
     ...context.repo,
     issue_number: pullRequest.number,

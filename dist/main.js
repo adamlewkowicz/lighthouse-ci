@@ -637,7 +637,7 @@ function isUnixExecutable(stats) {
 //# sourceMappingURL=io-util.js.map
 });
 
-var __awaiter$2 = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
+var __awaiter$1 = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -658,7 +658,7 @@ const childProcess = __importStar$2(require$$0__default$2['default']);
 const path$1 = __importStar$2(require$$1__default['default']);
 
 const ioUtil$1 = __importStar$2(ioUtil$2);
-const exec$2 = util_1__default['default'].promisify(childProcess.exec);
+const exec = util_1__default['default'].promisify(childProcess.exec);
 /**
  * Copies a file or folder.
  * Based off of shelljs - https://github.com/shelljs/shelljs/blob/9237f66c52e5daa40458f94f9565e18e8132f5a6/src/cp.js
@@ -668,7 +668,7 @@ const exec$2 = util_1__default['default'].promisify(childProcess.exec);
  * @param     options   optional. See CopyOptions.
  */
 function cp(source, dest, options = {}) {
-    return __awaiter$2(this, void 0, void 0, function* () {
+    return __awaiter$1(this, void 0, void 0, function* () {
         const { force, recursive } = readCopyOptions(options);
         const destStat = (yield ioUtil$1.exists(dest)) ? yield ioUtil$1.stat(dest) : null;
         // Dest is an existing file, but not forcing
@@ -709,7 +709,7 @@ var cp_1 = cp;
  * @param     options   optional. See MoveOptions.
  */
 function mv(source, dest, options = {}) {
-    return __awaiter$2(this, void 0, void 0, function* () {
+    return __awaiter$1(this, void 0, void 0, function* () {
         if (yield ioUtil$1.exists(dest)) {
             let destExists = true;
             if (yield ioUtil$1.isDirectory(dest)) {
@@ -737,16 +737,16 @@ var mv_1 = mv;
  * @param inputPath path to remove
  */
 function rmRF(inputPath) {
-    return __awaiter$2(this, void 0, void 0, function* () {
+    return __awaiter$1(this, void 0, void 0, function* () {
         if (ioUtil$1.IS_WINDOWS) {
             // Node doesn't provide a delete operation, only an unlink function. This means that if the file is being used by another
             // program (e.g. antivirus), it won't be deleted. To address this, we shell out the work to rd/del.
             try {
                 if (yield ioUtil$1.isDirectory(inputPath, true)) {
-                    yield exec$2(`rd /s /q "${inputPath}"`);
+                    yield exec(`rd /s /q "${inputPath}"`);
                 }
                 else {
-                    yield exec$2(`del /f /a "${inputPath}"`);
+                    yield exec(`del /f /a "${inputPath}"`);
                 }
             }
             catch (err) {
@@ -779,7 +779,7 @@ function rmRF(inputPath) {
                 return;
             }
             if (isDir) {
-                yield exec$2(`rm -rf "${inputPath}"`);
+                yield exec(`rm -rf "${inputPath}"`);
             }
             else {
                 yield ioUtil$1.unlink(inputPath);
@@ -796,7 +796,7 @@ var rmRF_1 = rmRF;
  * @returns Promise<void>
  */
 function mkdirP(fsPath) {
-    return __awaiter$2(this, void 0, void 0, function* () {
+    return __awaiter$1(this, void 0, void 0, function* () {
         yield ioUtil$1.mkdirP(fsPath);
     });
 }
@@ -810,7 +810,7 @@ var mkdirP_1 = mkdirP;
  * @returns   Promise<string>   path to tool
  */
 function which(tool, check) {
-    return __awaiter$2(this, void 0, void 0, function* () {
+    return __awaiter$1(this, void 0, void 0, function* () {
         if (!tool) {
             throw new Error("parameter 'tool' is required");
         }
@@ -841,7 +841,7 @@ var which_1 = which;
  * @returns   Promise<string[]>  the paths of the tool
  */
 function findInPath(tool) {
-    return __awaiter$2(this, void 0, void 0, function* () {
+    return __awaiter$1(this, void 0, void 0, function* () {
         if (!tool) {
             throw new Error("parameter 'tool' is required");
         }
@@ -898,7 +898,7 @@ function readCopyOptions(options) {
     return { force, recursive };
 }
 function cpDirRecursive(sourceDir, destDir, currentDepth, force) {
-    return __awaiter$2(this, void 0, void 0, function* () {
+    return __awaiter$1(this, void 0, void 0, function* () {
         // Ensure there is not a run away recursive copy
         if (currentDepth >= 255)
             return;
@@ -923,7 +923,7 @@ function cpDirRecursive(sourceDir, destDir, currentDepth, force) {
 }
 // Buffered file copy
 function copyFile(srcFile, destFile, force) {
-    return __awaiter$2(this, void 0, void 0, function* () {
+    return __awaiter$1(this, void 0, void 0, function* () {
         if ((yield ioUtil$1.lstat(srcFile)).isSymbolicLink()) {
             // unlink/re-link it
             try {
@@ -958,7 +958,7 @@ var io$1 = /*#__PURE__*/Object.defineProperty({
 	findInPath: findInPath_1
 }, '__esModule', {value: true});
 
-var __awaiter$1 = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
+var __awaiter = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -1325,7 +1325,7 @@ class ToolRunner extends events.EventEmitter {
      * @returns   number
      */
     exec() {
-        return __awaiter$1(this, void 0, void 0, function* () {
+        return __awaiter(this, void 0, void 0, function* () {
             // root the tool path if it is unrooted and contains relative pathing
             if (!ioUtil.isRooted(this.toolPath) &&
                 (this.toolPath.includes('/') ||
@@ -1563,15 +1563,6 @@ var toolrunner = /*#__PURE__*/Object.defineProperty({
 	argStringToArray: argStringToArray_1
 }, '__esModule', {value: true});
 
-var __awaiter = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -1580,36 +1571,7 @@ var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (
     return result;
 };
 
-const tr = __importStar(toolrunner);
-/**
- * Exec a command.
- * Output will be streamed to the live console.
- * Returns promise with return code
- *
- * @param     commandLine        command to execute (can include additional args). Must be correctly escaped.
- * @param     args               optional arguments for tool. Escaping is handled by the lib.
- * @param     options            optional exec options.  See ExecOptions
- * @returns   Promise<number>    exit code
- */
-function exec$1(commandLine, args, options) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const commandArgs = tr.argStringToArray(commandLine);
-        if (commandArgs.length === 0) {
-            throw new Error(`Parameter 'commandLine' cannot be null or empty.`);
-        }
-        // Path to tool to execute should be first arg
-        const toolPath = commandArgs[0];
-        args = commandArgs.slice(1).concat(args || []);
-        const runner = new tr.ToolRunner(toolPath, args, options);
-        return runner.exec();
-    });
-}
-var exec_2 = exec$1;
-
-
-var exec_1 = /*#__PURE__*/Object.defineProperty({
-	exec: exec_2
-}, '__esModule', {value: true});
+__importStar(toolrunner);
 
 var context$1 = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -7231,7 +7193,6 @@ exports.getOctokit = getOctokit;
 });
 
 const { getInput } = core;
-const { exec } = exec_1;
 const { getOctokit, context } = github;
 
 async function run() {
@@ -7239,12 +7200,12 @@ async function run() {
   console.log({ urls, token });
   const octokit = getOctokit(token);
   await createComment(octokit, `Lighthouse CI Result`);
-  await installDependencies();
-  await buildAndServe();
-  // const lighthouseResultCurrent = await getLighthouseResult(urls[0])
-  await checkoutBaseBranch();
-  await installDependencies();
-  await buildAndServe();
+  // await installDependencies();
+  // await buildAndServe();
+  // // const lighthouseResultCurrent = await getLighthouseResult(urls[0])
+  // await checkoutBaseBranch();
+  // await installDependencies();
+  // await buildAndServe();
   // const lighthouseResultBase = await getLighthouseResult(urls[0])
 }
 
@@ -7253,47 +7214,10 @@ const getActionInputs = () => ({
   token: getInput('repo-token', { required: true }),
 });
 
-const installDependencies = () => {
-  console.log('Install Dependencies');
-  return exec('npm install');
-};
-
-const buildAndServe = () => exec('npm run build:serve');
-
 const pullRequest = context.payload.pull_request;
 
-const checkoutBaseBranch = async () => {
-  let baseRef;
-  try {
-    baseRef = context.payload.base.ref;
-    if (!baseRef) throw Error('missing context.payload.pull_request.base.ref');
-    await exec(`git fetch -n origin ${pullRequest.base.ref}`);
-    console.log('successfully fetched base.ref');
-  } catch (e) {
-    console.log('fetching base.ref failed', e.message);
-    try {
-      await exec(`git fetch -n origin ${pullRequest.base.sha}`);
-      console.log('successfully fetched base.sha');
-    } catch (e) {
-      console.log('fetching base.sha failed', e.message);
-      try {
-        await exec(`git fetch -n`);
-      } catch (e) {
-        console.log('fetch failed', e.message);
-      }
-    }
-  }
-
-  console.log('checking out and building base commit');
-  try {
-    if (!baseRef) throw Error('missing context.payload.base.ref');
-    await exec(`git reset --hard ${baseRef}`);
-  } catch (e) {
-    await exec(`git reset --hard ${pullRequest.base.sha}`);
-  }
-};
-
 const createComment = async (octokit, content) => {
+  console.log('Creating comment');
   await octokit.issues.createComment({
     ...context.repo,
     issue_number: pullRequest.number,
