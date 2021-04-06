@@ -1611,7 +1611,7 @@ var exec_1 = /*#__PURE__*/Object.defineProperty({
 	exec: exec_2
 }, '__esModule', {value: true});
 
-var context = createCommonjsModule(function (module, exports) {
+var context$1 = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Context = void 0;
 
@@ -7158,7 +7158,7 @@ var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOctokitOptions = exports.GitHub = exports.context = void 0;
-const Context = __importStar(context);
+const Context = __importStar(context$1);
 const Utils = __importStar(utils$1);
 // octokit + plugins
 
@@ -7214,7 +7214,7 @@ var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOctokit = exports.context = void 0;
-const Context = __importStar(context);
+const Context = __importStar(context$1);
 
 exports.context = new Context.Context();
 /**
@@ -7239,9 +7239,9 @@ async function run() {
   console.log({ urls, token });
   getOctokit(token);
   await installDependencies();
-  // await buildAndServe()
+  await buildAndServe();
   // const lighthouseResultCurrent = await getLighthouseResult(urls[0])
-  // await checkoutBaseBranch()
+  await checkoutBaseBranch();
   // await installDependencies()
   // await buildAndServe()
   // const lighthouseResultBase = await getLighthouseResult(urls[0])
@@ -7254,6 +7254,41 @@ const getActionInputs = () => ({
 });
 
 const installDependencies = () => exec('npm install');
+
+const buildAndServe = () => exec('npm run build:serve');
+
+const pullRequest = context.payload.pull_request;
+
+const checkoutBaseBranch = async () => {
+  let baseRef;
+  try {
+    baseRef = context.payload.base.ref;
+    if (!baseRef) throw Error('missing context.payload.pull_request.base.ref');
+    await exec(`git fetch -n origin ${pullRequest.base.ref}`);
+    console.log('successfully fetched base.ref');
+  } catch (e) {
+    console.log('fetching base.ref failed', e.message);
+    try {
+      await exec(`git fetch -n origin ${pullRequest.base.sha}`);
+      console.log('successfully fetched base.sha');
+    } catch (e) {
+      console.log('fetching base.sha failed', e.message);
+      try {
+        await exec(`git fetch -n`);
+      } catch (e) {
+        console.log('fetch failed', e.message);
+      }
+    }
+  }
+
+  console.log('checking out and building base commit');
+  try {
+    if (!baseRef) throw Error('missing context.payload.base.ref');
+    await exec(`git reset --hard ${baseRef}`);
+  } catch (e) {
+    await exec(`git reset --hard ${pullRequest.base.sha}`);
+  }
+};
 
 run();
 
