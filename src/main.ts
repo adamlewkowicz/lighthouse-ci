@@ -1,19 +1,28 @@
-import * as core from '@actions/core'
-import {wait} from './wait'
+import {getOctokit} from '@actions/github'
+import {
+  buildAndServe,
+  checkoutBaseBranch,
+  createComment,
+  getActionInputs,
+  getLighthouseResult,
+  installDependencies
+} from './utils'
 
-async function run(): Promise<void> {
-  try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+async function run() {
+  const {urls, token} = getActionInputs()
+  const octokit = getOctokit(token)
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+  await installDependencies()
+  await buildAndServe()
+  const lighthouseResultCurrent = await getLighthouseResult(urls[0])
 
-    core.setOutput('time', new Date().toTimeString())
-  } catch (error) {
-    core.setFailed(error.message)
-  }
+  await checkoutBaseBranch()
+
+  await installDependencies()
+  await buildAndServe()
+  const lighthouseResultBase = await getLighthouseResult(urls[0])
+
+  await createComment(octokit, `Lighthouse CI Result`)
 }
 
 run()
