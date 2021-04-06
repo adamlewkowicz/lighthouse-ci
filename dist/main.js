@@ -7218,7 +7218,7 @@ const getActionInputs = () => ({
 const pullRequest = context.payload.pull_request;
 
 const createComment = async (octokit, content) => {
-  console.log('Creating comment');
+  console.log('Creating comment', { context });
   await octokit.issues.createComment({
     ...context.repo,
     issue_number: pullRequest.number,
