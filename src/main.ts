@@ -38,7 +38,9 @@ async function run() {
   // await checkoutBaseBranch()
   await installDependencies();
   await buildAndServe();
-  const lighthouseResultBase = await getLighthouseResult(urls[0]);
+  const lighthouseResultBase = await getLighthouseResult(
+    'http://localhost:3000/',
+  );
   console.log(lighthouseResultBase);
 
   // await createComment(

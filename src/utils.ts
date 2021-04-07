@@ -13,9 +13,13 @@ export const getActionInputs = () => ({
   token: getInput('repo-token', { required: true }),
 });
 
-export const installDependencies = () => exec('npm install');
+export const installDependencies = () => exec('npm ci');
 
-export const buildAndServe = () => exec('npm run build:serve');
+export const buildAndServe = async () => {
+  await exec('npm run build');
+  exec('npm run serve');
+  // exec('npm run build:serve')
+};
 
 export const checkoutBaseBranch = async () => {
   let baseRef: any;

@@ -19,7 +19,7 @@ async function run() {
     // await checkoutBaseBranch()
     await utils_1.installDependencies();
     await utils_1.buildAndServe();
-    const lighthouseResultBase = await lighthouse_1.getLighthouseResult(urls[0]);
+    const lighthouseResultBase = await lighthouse_1.getLighthouseResult('http://localhost:3000/');
     console.log(lighthouseResultBase);
     // await createComment(
     //   octokit,

@@ -11,8 +11,12 @@ exports.getActionInputs = () => ({
     urls: core_1.getInput('urls', { required: true }).split(','),
     token: core_1.getInput('repo-token', { required: true }),
 });
-exports.installDependencies = () => exec_1.exec('npm install');
-exports.buildAndServe = () => exec_1.exec('npm run build:serve');
+exports.installDependencies = () => exec_1.exec('npm ci');
+exports.buildAndServe = async () => {
+    await exec_1.exec('npm run build');
+    exec_1.exec('npm run serve');
+    // exec('npm run build:serve')
+};
 exports.checkoutBaseBranch = async () => {
     let baseRef;
     try {
