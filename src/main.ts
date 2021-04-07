@@ -17,7 +17,7 @@ async function run() {
   // await buildAndServe();
   // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
   const lighthouseResultCurrent = await getLighthouseResult(
-    'https://amaro.com/',
+    'https://amaro.com/br/pt/',
   );
   //
   console.log(
