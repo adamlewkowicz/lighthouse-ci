@@ -20,10 +20,7 @@ async function run() {
     'https://amaro.com/br/pt/',
   );
   //
-  console.log(
-    Object.keys(lighthouseResultCurrent),
-    JSON.stringify(lighthouseResultCurrent),
-  );
+  console.log(Object.keys(lighthouseResultCurrent), lighthouseResultCurrent);
 
   // await checkoutBaseBranch()
   // await installDependencies()
