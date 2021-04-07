@@ -1,28 +1,15 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createComment = exports.checkoutBaseBranch = exports.buildAndServe = exports.installDependencies = exports.getActionInputs = exports.getLighthouseResult = exports.pullRequest = void 0;
 const lighthouse_1 = __importDefault(require("lighthouse"));
 const chromeLauncher = __importStar(require("chrome-launcher"));
 const core_1 = require("@actions/core");
@@ -41,16 +28,13 @@ async function getLighthouseResult(url) {
     return lighthouseResult;
 }
 exports.getLighthouseResult = getLighthouseResult;
-const getActionInputs = () => ({
+exports.getActionInputs = () => ({
     urls: core_1.getInput('urls', { required: true }).split(','),
     token: core_1.getInput('repo-token', { required: true }),
 });
-exports.getActionInputs = getActionInputs;
-const installDependencies = () => exec_1.exec('npm install');
-exports.installDependencies = installDependencies;
-const buildAndServe = () => exec_1.exec('npm run build:serve');
-exports.buildAndServe = buildAndServe;
-const checkoutBaseBranch = async () => {
+exports.installDependencies = () => exec_1.exec('npm install');
+exports.buildAndServe = () => exec_1.exec('npm run build:serve');
+exports.checkoutBaseBranch = async () => {
     let baseRef;
     try {
         baseRef = github_1.context.payload.base.ref;
@@ -85,12 +69,10 @@ const checkoutBaseBranch = async () => {
         await exec_1.exec(`git reset --hard ${exports.pullRequest.base.sha}`);
     }
 };
-exports.checkoutBaseBranch = checkoutBaseBranch;
-const createComment = async (octokit, content) => {
+exports.createComment = async (octokit, content) => {
     await octokit.issues.createComment({
         ...github_1.context.repo,
         issue_number: exports.pullRequest.number,
         body: content,
     });
 };
-exports.createComment = createComment;

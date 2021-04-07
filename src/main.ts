@@ -23,6 +23,7 @@ async function run() {
   console.log(
     Object.keys(lighthouseResultCurrent),
     lighthouseResultCurrent.lhr,
+    lighthouseResultCurrent,
   );
 
   // await checkoutBaseBranch()
