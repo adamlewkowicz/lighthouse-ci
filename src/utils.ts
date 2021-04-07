@@ -1,5 +1,5 @@
 import lighthouse from 'lighthouse';
-// import * as chromeLauncher from 'chrome-launcher';
+import * as chromeLauncher from 'chrome-launcher';
 import { getInput } from '@actions/core';
 import { exec } from '@actions/exec';
 import { context, getOctokit } from '@actions/github';

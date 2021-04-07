@@ -1,6 +1,8 @@
 const { getInput } = require('@actions/core');
 const { exec } = require('@actions/exec');
 const { getOctokit, context } = require('@actions/github');
+const chromeLauncher = require('chrome-launcher');
+const lighthouse = require('lighthouse');
 
 async function run() {
   const { urls, token } = getActionInputs();
@@ -37,8 +39,16 @@ const buildAndServe = async () => {
 
 const pullRequest = context.payload.pull_request;
 
-const getLighthouseResult = async () => {
-  return { perf: 4 };
+const getLighthouseResult = async (url) => {
+  const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
+  const options = {
+    logLevel: 'info',
+    output: 'html',
+    onlyCategories: ['performance'],
+    port: chrome.port,
+  };
+  const runnerResult = await lighthouse(url, options);
+  return runnerResult;
 };
 
 const checkoutBaseBranch = async () => {
