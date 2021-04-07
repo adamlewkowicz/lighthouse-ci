@@ -18,6 +18,7 @@ async function getLighthouseResult(url) {
     const { lhr: lighthouseResult } = await lighthouse_1.default(url, {
         port: chrome.port,
         onlyCategories: ['performance'],
+        logLevel: 'info',
     });
     await chrome.kill();
     return lighthouseResult;

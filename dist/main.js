@@ -12,14 +12,14 @@ async function run() {
     // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
     const lighthouseResultCurrent = await lighthouse_1.getLighthouseResult('https://amaro.com/br/pt/');
     //
-    console.log(Object.keys(lighthouseResultCurrent), lighthouseResultCurrent.lhr, JSON.stringify(lighthouseResultCurrent));
+    console.log(Object.keys(lighthouseResultCurrent), JSON.stringify(lighthouseResultCurrent));
     // await checkoutBaseBranch()
     // await installDependencies()
     // await buildAndServe()
     // const lighthouseResultBase = await getLighthouseResult(urls[0])
     await utils_1.createComment(octokit, `
     \`\`\`json
-      ${JSON.stringify(lighthouseResultCurrent.audits)}
+      ${JSON.stringify(lighthouseResultCurrent.audits['largest-contentful-paint'])}
     \`\`\`
   `);
 }
