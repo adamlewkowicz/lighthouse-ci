@@ -33,12 +33,14 @@ exports.getLhrComparison = (previousResult, nextResult) => {
         'largest-contentful-paint',
         'cumulative-layout-shift',
     ];
-    return fields.map((field) => ({
-        title: previousResult[field].title,
-        previousScore: previousResult[field].displayValue,
-        nextScore: nextResult[field].displayValue,
-        difference: previousResult[field].score - nextResult[field].score,
-    }));
+    return fields.map((field) => {
+        return {
+            title: previousResult[field].title,
+            previousScore: previousResult[field].displayValue,
+            nextScore: nextResult[field].displayValue,
+            difference: previousResult[field].score - nextResult[field].score,
+        };
+    });
 };
 const tableHeaderTitles = ['Metric', 'Base', 'Current', '+/-'];
 exports.getLighthouseResultsTable = (reports) => `

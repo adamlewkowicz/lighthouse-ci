@@ -24,11 +24,7 @@ async function run() {
     'https://amaro.com/br/pt/',
   );
   //
-  console.log(
-    Object.keys(lighthouseResultCurrent),
-    lighthouseResultCurrent.categories.performance.auditRefs,
-    lighthouseResultCurrent,
-  );
+  console.log(lighthouseResultCurrent.audits);
 
   const reports = getLhrComparison(
     lighthouseResultCurrent.audits,
@@ -40,9 +36,11 @@ async function run() {
   await createComment(octokit, table);
 
   // await checkoutBaseBranch()
-  // await installDependencies()
-  // await buildAndServe()
-  // const lighthouseResultBase = await getLighthouseResult(urls[0])
+  await installDependencies();
+  await buildAndServe();
+  const lighthouseResultBase = await getLighthouseResult(urls[0]);
+  console.log(lighthouseResultBase);
+
   // await createComment(
   //   octokit,
   //   `

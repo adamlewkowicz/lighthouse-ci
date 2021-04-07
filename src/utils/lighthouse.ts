@@ -29,12 +29,14 @@ export const getLhrComparison = (
     'cumulative-layout-shift',
   ] as const;
 
-  return fields.map((field) => ({
-    title: previousResult[field].title,
-    previousScore: previousResult[field].displayValue,
-    nextScore: nextResult[field].displayValue,
-    difference: previousResult[field].score - nextResult[field].score,
-  }));
+  return fields.map((field) => {
+    return {
+      title: previousResult[field].title,
+      previousScore: previousResult[field].displayValue,
+      nextScore: nextResult[field].displayValue,
+      difference: previousResult[field].score - nextResult[field].score,
+    };
+  });
 };
 
 const tableHeaderTitles = ['Metric', 'Base', 'Current', '+/-'];
