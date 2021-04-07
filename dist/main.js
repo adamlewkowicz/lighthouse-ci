@@ -13,7 +13,9 @@ async function run() {
     const lighthouseResultCurrent = await lighthouse_1.getLighthouseResult('https://amaro.com/br/pt/');
     //
     console.log(Object.keys(lighthouseResultCurrent), lighthouseResultCurrent.categories.performance.auditRefs, lighthouseResultCurrent);
-    console.log(lighthouse_1.getLhrComparison(lighthouseResultCurrent.audits, lighthouseResultCurrent.audits));
+    const reports = lighthouse_1.getLhrComparison(lighthouseResultCurrent.audits, lighthouseResultCurrent.audits);
+    const table = lighthouse_1.getLighthouseResultsTable(reports);
+    await utils_1.createComment(octokit, table);
     // await checkoutBaseBranch()
     // await installDependencies()
     // await buildAndServe()

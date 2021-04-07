@@ -27,9 +27,11 @@ exports.getLighthouseResult = getLighthouseResult;
 exports.getLhrComparison = (previousResult, nextResult) => {
     const fields = [
         'first-contentful-paint',
+        'interactive',
+        'speed-index',
         'total-blocking-time',
         'largest-contentful-paint',
-        'speed-index',
+        'cumulative-layout-shift',
     ];
     return fields.map((field) => ({
         title: previousResult[field].title,
@@ -37,19 +39,18 @@ exports.getLhrComparison = (previousResult, nextResult) => {
         nextScore: nextResult[field].displayValue,
         difference: previousResult[field].score - nextResult[field].score,
     }));
-    // const item = [
-    //   {
-    //   title: previousResult['first-contentful-paint'].title,
-    //   previousScore: previousResult['first-contentful-paint'].displayValue,
-    //   nextScore: nextResult['first-contentful-paint'].displayValue,
-    //   difference:
-    //     previousResult['first-contentful-paint'].score -
-    //     nextResult['first-contentful-paint'].score,
-    // },
-    //   {
-    //     title: 'Time to Interactive	',
-    //   },
-    // ];
-    // return {};
 };
+const tableHeaderTitles = ['Metric', 'Base', 'Current', '+/-'];
+exports.getLighthouseResultsTable = (reports) => `
+  | ${reports.map((report) => report.title).join(' | ')} |
+  | ${tableHeaderTitles.map(() => '---').join(' | ')} |
+  ${reports
+    .map((report) => [
+    report.previousScore,
+    report.nextScore,
+    report.difference,
+])
+    .map((columns) => `| ${columns.join(' | ')} |`)
+    .join('\n')}
+`;
 const normalizeLighthouseResults = () => { };

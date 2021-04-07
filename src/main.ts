@@ -6,7 +6,11 @@ import {
   getActionInputs,
   installDependencies,
 } from './utils';
-import { getLighthouseResult, getLhrComparison } from './utils/lighthouse';
+import {
+  getLighthouseResult,
+  getLhrComparison,
+  getLighthouseResultsTable,
+} from './utils/lighthouse';
 
 async function run() {
   const { urls, token } = getActionInputs();
@@ -26,12 +30,14 @@ async function run() {
     lighthouseResultCurrent,
   );
 
-  console.log(
-    getLhrComparison(
-      lighthouseResultCurrent.audits,
-      lighthouseResultCurrent.audits,
-    ),
+  const reports = getLhrComparison(
+    lighthouseResultCurrent.audits,
+    lighthouseResultCurrent.audits,
   );
+
+  const table = getLighthouseResultsTable(reports);
+
+  await createComment(octokit, table);
 
   // await checkoutBaseBranch()
   // await installDependencies()
