@@ -1,5 +1,3 @@
-import lighthouse from 'lighthouse';
-import * as chromeLauncher from 'chrome-launcher';
 import { getInput } from '@actions/core';
 import { exec } from '@actions/exec';
 import { context, getOctokit } from '@actions/github';
@@ -8,16 +6,6 @@ export const pullRequest = context.payload.pull_request;
 
 if (!pullRequest) {
   throw new Error('No pull request found');
-}
-
-export async function getLighthouseResult(url: string) {
-  const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
-  const { lhr: lighthouseResult } = await lighthouse(url, {
-    port: chrome.port,
-  });
-  await chrome.kill();
-
-  return lighthouseResult;
 }
 
 export const getActionInputs = () => ({

@@ -4,15 +4,15 @@ import {
   checkoutBaseBranch,
   createComment,
   getActionInputs,
-  getLighthouseResult,
   installDependencies,
 } from './utils';
+import { getLighthouseResult } from './utils/lighthouse';
 
 async function run() {
   const { urls, token } = getActionInputs();
   console.log({ urls, token });
 
-  // const octokit = getOctokit(token)
+  const octokit = getOctokit(token);
   // await installDependencies();
   // await buildAndServe();
   // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
@@ -30,7 +30,14 @@ async function run() {
   // await installDependencies()
   // await buildAndServe()
   // const lighthouseResultBase = await getLighthouseResult(urls[0])
-  // await createComment(octokit, `Lighthouse CI Result`)
+  await createComment(
+    octokit,
+    `
+    \`\`\`json
+      ${JSON.stringify(lighthouseResultCurrent)}
+    \`\`\`
+  `,
+  );
 }
 
 run();

@@ -1,20 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const github_1 = require("@actions/github");
 const utils_1 = require("./utils");
+const lighthouse_1 = require("./utils/lighthouse");
 async function run() {
     const { urls, token } = utils_1.getActionInputs();
     console.log({ urls, token });
-    // const octokit = getOctokit(token)
+    const octokit = github_1.getOctokit(token);
     // await installDependencies();
     // await buildAndServe();
     // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
-    const lighthouseResultCurrent = await utils_1.getLighthouseResult('https://amaro.com/br/pt/');
+    const lighthouseResultCurrent = await lighthouse_1.getLighthouseResult('https://amaro.com/br/pt/');
     //
     console.log(Object.keys(lighthouseResultCurrent), lighthouseResultCurrent.lhr, lighthouseResultCurrent);
     // await checkoutBaseBranch()
     // await installDependencies()
     // await buildAndServe()
     // const lighthouseResultBase = await getLighthouseResult(urls[0])
-    // await createComment(octokit, `Lighthouse CI Result`)
+    await utils_1.createComment(octokit, `
+    \`\`\`json
+      ${JSON.stringify(lighthouseResultCurrent)}
+    \`\`\`
+  `);
 }
 run();
