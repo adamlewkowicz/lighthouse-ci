@@ -6,7 +6,7 @@ import {
   getActionInputs,
   installDependencies,
 } from './utils';
-import { getLighthouseResult } from './utils/lighthouse';
+import { getLighthouseResult, getLhrComparison } from './utils/lighthouse';
 
 async function run() {
   const { urls, token } = getActionInputs();
@@ -26,20 +26,27 @@ async function run() {
     lighthouseResultCurrent,
   );
 
+  console.log(
+    getLhrComparison(
+      lighthouseResultCurrent.audits,
+      lighthouseResultCurrent.audits,
+    ),
+  );
+
   // await checkoutBaseBranch()
   // await installDependencies()
   // await buildAndServe()
   // const lighthouseResultBase = await getLighthouseResult(urls[0])
-  await createComment(
-    octokit,
-    `
-    \`\`\`json
-      ${JSON.stringify(
-        lighthouseResultCurrent.audits['largest-contentful-paint'],
-      )}
-    \`\`\`
-  `,
-  );
+  // await createComment(
+  //   octokit,
+  //   `
+  //   \`\`\`json
+  //     ${JSON.stringify(
+  //       lighthouseResultCurrent.audits['largest-contentful-paint'],
+  //     )}
+  //   \`\`\`
+  // `,
+  // );
 }
 
 run();

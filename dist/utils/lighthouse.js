@@ -24,3 +24,32 @@ async function getLighthouseResult(url) {
     return lighthouseResult;
 }
 exports.getLighthouseResult = getLighthouseResult;
+exports.getLhrComparison = (previousResult, nextResult) => {
+    const fields = [
+        'first-contentful-paint',
+        'total-blocking-time',
+        'largest-contentful-paint',
+        'speed-index',
+    ];
+    return fields.map((field) => ({
+        title: previousResult[field].title,
+        previousScore: previousResult[field].displayValue,
+        nextScore: nextResult[field].displayValue,
+        difference: previousResult[field].score - nextResult[field].score,
+    }));
+    // const item = [
+    //   {
+    //   title: previousResult['first-contentful-paint'].title,
+    //   previousScore: previousResult['first-contentful-paint'].displayValue,
+    //   nextScore: nextResult['first-contentful-paint'].displayValue,
+    //   difference:
+    //     previousResult['first-contentful-paint'].score -
+    //     nextResult['first-contentful-paint'].score,
+    // },
+    //   {
+    //     title: 'Time to Interactive	',
+    //   },
+    // ];
+    // return {};
+};
+const normalizeLighthouseResults = () => { };
