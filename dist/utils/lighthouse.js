@@ -42,10 +42,11 @@ exports.getLhrComparison = (previousResult, nextResult) => {
 };
 const tableHeaderTitles = ['Metric', 'Base', 'Current', '+/-'];
 exports.getLighthouseResultsTable = (reports) => `
-  | ${reports.map((report) => report.title).join(' | ')} |
+  | ${tableHeaderTitles.join(' | ')} |
   | ${tableHeaderTitles.map(() => '---').join(' | ')} |
   ${reports
     .map((report) => [
+    report.title,
     report.previousScore,
     report.nextScore,
     report.difference,
