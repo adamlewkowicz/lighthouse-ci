@@ -33,14 +33,25 @@ exports.getLhrComparison = (previousResult, nextResult) => {
         'largest-contentful-paint',
         'cumulative-layout-shift',
     ];
-    return fields.map((field) => {
+    const normalizedResult = fields.map((field) => {
+        const prevAudit = previousResult.audits[field];
+        const nextAudit = nextResult.audits[field];
         return {
-            title: previousResult[field].title,
-            previousScore: previousResult[field].displayValue,
-            nextScore: nextResult[field].displayValue,
-            difference: previousResult[field].score - nextResult[field].score,
+            title: prevAudit.title,
+            previousScore: prevAudit.displayValue,
+            nextScore: nextAudit.displayValue,
+            difference: prevAudit.score - nextAudit.score,
         };
     });
+    const performanceResult = {
+        title: 'Performance',
+        previousScore: previousResult.categories.performance.score,
+        nextScore: nextResult.categories.performance.score,
+        difference: nextResult.categories.performance.score -
+            previousResult.categories.performance.score,
+    };
+    normalizedResult.unshift(performanceResult);
+    return normalizedResult;
 };
 const tableHeaderTitles = ['Metric', 'Base', 'Current', '+/-'];
 exports.getLighthouseResultsTable = (reports) => `

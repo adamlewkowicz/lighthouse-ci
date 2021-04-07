@@ -17,8 +17,8 @@ export async function getLighthouseResult(url: string) {
 }
 
 export const getLhrComparison = (
-  previousResult: LighthouseResult['audits'],
-  nextResult: LighthouseResult['audits'],
+  previousResult: LighthouseResult,
+  nextResult: LighthouseResult,
 ): Item[] => {
   const fields = [
     'first-contentful-paint',
@@ -29,14 +29,30 @@ export const getLhrComparison = (
     'cumulative-layout-shift',
   ] as const;
 
-  return fields.map((field) => {
+  const normalizedResult = fields.map<Item>((field) => {
+    const prevAudit = previousResult.audits[field];
+    const nextAudit = nextResult.audits[field];
+
     return {
-      title: previousResult[field].title,
-      previousScore: previousResult[field].displayValue,
-      nextScore: nextResult[field].displayValue,
-      difference: previousResult[field].score - nextResult[field].score,
+      title: prevAudit.title,
+      previousScore: prevAudit.displayValue,
+      nextScore: nextAudit.displayValue,
+      difference: prevAudit.score - nextAudit.score,
     };
   });
+
+  const performanceResult = {
+    title: 'Performance',
+    previousScore: previousResult.categories.performance.score,
+    nextScore: nextResult.categories.performance.score,
+    difference:
+      nextResult.categories.performance.score -
+      previousResult.categories.performance.score,
+  };
+
+  normalizedResult.unshift(performanceResult);
+
+  return normalizedResult;
 };
 
 const tableHeaderTitles = ['Metric', 'Base', 'Current', '+/-'];
@@ -57,8 +73,8 @@ export const getLighthouseResultsTable = (reports: Item[]) => `
 
 interface Item {
   title: string;
-  previousScore: string;
-  nextScore: string;
+  previousScore: string | number;
+  nextScore: string | number;
   difference: string | number;
 }
 

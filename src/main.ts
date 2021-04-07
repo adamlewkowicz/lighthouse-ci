@@ -1,3 +1,4 @@
+import { setFailed } from '@actions/core';
 import { getOctokit } from '@actions/github';
 import {
   buildAndServe,
@@ -20,20 +21,18 @@ async function run() {
   // await installDependencies();
   // await buildAndServe();
   // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
-  const lighthouseResultCurrent = await getLighthouseResult(
-    'https://amaro.com/br/pt/',
-  );
-  //
-  console.log(lighthouseResultCurrent.audits);
+  // const lighthouseResultCurrent = await getLighthouseResult(
+  //   'https://amaro.com/br/pt/',
+  // );
 
-  const reports = getLhrComparison(
-    lighthouseResultCurrent.audits,
-    lighthouseResultCurrent.audits,
-  );
+  // const reports = getLhrComparison(
+  //   lighthouseResultCurrent,
+  //   lighthouseResultCurrent,
+  // );
 
-  const table = getLighthouseResultsTable(reports);
+  // const table = getLighthouseResultsTable(reports);
 
-  await createComment(octokit, table);
+  // await createComment(octokit, table);
 
   // await checkoutBaseBranch()
   await installDependencies();
@@ -55,4 +54,6 @@ async function run() {
   // );
 }
 
-run();
+run().catch((error) => {
+  setFailed(error.message);
+});
