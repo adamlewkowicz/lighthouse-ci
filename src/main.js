@@ -8,9 +8,12 @@ async function run() {
   const octokit = getOctokit(token);
   console.log('COMMENT');
   await createComment(octokit, `Lighthouse CI Result`);
-  // await installDependencies();
-  // await buildAndServe();
-  // // const lighthouseResultCurrent = await getLighthouseResult(urls[0])
+  await installDependencies();
+  await buildAndServe();
+
+  const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
+
+  console.log({ lighthouseResultCurrent });
   // await checkoutBaseBranch();
   // await installDependencies();
   // await buildAndServe();
@@ -24,12 +27,19 @@ const getActionInputs = () => ({
 
 const installDependencies = () => {
   console.log('Install Dependencies');
-  return exec('npm install');
+  return exec('npm ci');
 };
 
-const buildAndServe = () => exec('npm run build:serve');
+const buildAndServe = async () => {
+  await exec('npm run build');
+  exec('npm run serve');
+};
 
 const pullRequest = context.payload.pull_request;
+
+const getLighthouseResult = async () => {
+  return { perf: 4 };
+};
 
 const checkoutBaseBranch = async () => {
   let baseRef;
