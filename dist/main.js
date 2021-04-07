@@ -5,9 +5,11 @@ async function run() {
     const { urls, token } = utils_1.getActionInputs();
     console.log({ urls, token });
     // const octokit = getOctokit(token)
-    await utils_1.installDependencies();
-    await utils_1.buildAndServe();
-    const lighthouseResultCurrent = await utils_1.getLighthouseResult(urls[0]);
+    // await installDependencies();
+    // await buildAndServe();
+    // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
+    const lighthouseResultCurrent = await utils_1.getLighthouseResult('https://amaro.com/');
+    //
     console.log(Object.keys(lighthouseResultCurrent), lighthouseResultCurrent.lhr);
     // await checkoutBaseBranch()
     // await installDependencies()

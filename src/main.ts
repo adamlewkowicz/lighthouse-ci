@@ -13,9 +13,13 @@ async function run() {
   console.log({ urls, token });
 
   // const octokit = getOctokit(token)
-  await installDependencies();
-  await buildAndServe();
-  const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
+  // await installDependencies();
+  // await buildAndServe();
+  // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
+  const lighthouseResultCurrent = await getLighthouseResult(
+    'https://amaro.com/',
+  );
+  //
   console.log(
     Object.keys(lighthouseResultCurrent),
     lighthouseResultCurrent.lhr,
