@@ -23,7 +23,7 @@ async function run() {
   console.log(
     Object.keys(lighthouseResultCurrent),
     lighthouseResultCurrent.lhr,
-    lighthouseResultCurrent,
+    JSON.stringify(lighthouseResultCurrent),
   );
 
   // await checkoutBaseBranch()
@@ -34,7 +34,7 @@ async function run() {
     octokit,
     `
     \`\`\`json
-      ${JSON.stringify(lighthouseResultCurrent)}
+      ${JSON.stringify(lighthouseResultCurrent.audits)}
     \`\`\`
   `,
   );
