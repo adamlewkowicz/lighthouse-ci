@@ -10,16 +10,12 @@ if (!pullRequest) {
   throw new Error('No pull request found');
 }
 
-export async function getLighthouseResult(url) {
-  const lighthouseResult = {};
-  // const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
-  // const { lhr: lighthouseResult } = await lighthouse(url, {
-  //   port: chrome.port,
-  // });
-
-  // console.log({ lighthouseResult });
-
-  // await chrome.kill();
+export async function getLighthouseResult(url: string) {
+  const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
+  const { lhr: lighthouseResult } = await lighthouse(url, {
+    port: chrome.port,
+  });
+  await chrome.kill();
 
   return lighthouseResult;
 }

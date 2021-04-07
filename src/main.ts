@@ -13,9 +13,14 @@ async function run() {
   console.log({ urls, token });
 
   // const octokit = getOctokit(token)
-  // await installDependencies()
-  // await buildAndServe()
-  // const lighthouseResultCurrent = await getLighthouseResult(urls[0])
+  await installDependencies();
+  await buildAndServe();
+  const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
+  console.log(
+    Object.keys(lighthouseResultCurrent),
+    lighthouseResultCurrent.lhr,
+  );
+
   // await checkoutBaseBranch()
   // await installDependencies()
   // await buildAndServe()
