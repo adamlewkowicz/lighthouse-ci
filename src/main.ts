@@ -22,7 +22,6 @@ async function run() {
   //
   console.log(
     Object.keys(lighthouseResultCurrent),
-    lighthouseResultCurrent.lhr,
     JSON.stringify(lighthouseResultCurrent),
   );
 
@@ -34,7 +33,9 @@ async function run() {
     octokit,
     `
     \`\`\`json
-      ${JSON.stringify(lighthouseResultCurrent.audits)}
+      ${JSON.stringify(
+        lighthouseResultCurrent.audits['largest-contentful-paint'],
+      )}
     \`\`\`
   `,
   );
