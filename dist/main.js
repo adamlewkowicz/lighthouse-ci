@@ -20,11 +20,18 @@ async function run() {
     // );
     // const table = getLighthouseResultsTable(reports);
     // await createComment(octokit, table);
-    // await checkoutBaseBranch()
+    //
     await utils_1.installDependencies();
     await utils_1.buildAndServe();
     const lighthouseResultBase = await lighthouse_1.getLighthouseResult('http://localhost:3000/');
     console.log(lighthouseResultBase);
+    await utils_1.checkoutBaseBranch();
+    await utils_1.installDependencies();
+    await utils_1.buildAndServe();
+    const lighthouseResultCurrent = await lighthouse_1.getLighthouseResult('http://localhost:3000/');
+    const reports = lighthouse_1.getLhrComparison(lighthouseResultCurrent, lighthouseResultCurrent);
+    const table = lighthouse_1.getLighthouseResultsTable(reports);
+    await utils_1.createComment(octokit, table);
     // await createComment(
     //   octokit,
     //   `

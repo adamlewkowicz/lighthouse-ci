@@ -34,13 +34,28 @@ async function run() {
 
   // await createComment(octokit, table);
 
-  // await checkoutBaseBranch()
+  //
   await installDependencies();
   await buildAndServe();
   const lighthouseResultBase = await getLighthouseResult(
     'http://localhost:3000/',
   );
   console.log(lighthouseResultBase);
+
+  await checkoutBaseBranch();
+
+  await installDependencies();
+  await buildAndServe();
+  const lighthouseResultCurrent = await getLighthouseResult(
+    'http://localhost:3000/',
+  );
+
+  const reports = getLhrComparison(
+    lighthouseResultCurrent,
+    lighthouseResultCurrent,
+  );
+  const table = getLighthouseResultsTable(reports);
+  await createComment(octokit, table);
 
   // await createComment(
   //   octokit,

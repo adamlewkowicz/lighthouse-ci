@@ -18,12 +18,12 @@ async function getLighthouseResult(url) {
     const { lhr: lighthouseResult } = await lighthouse_1.default(url, {
         port: chrome.port,
         onlyCategories: ['performance'],
-        logLevel: 'info',
     });
     await chrome.kill();
     return lighthouseResult;
 }
 exports.getLighthouseResult = getLighthouseResult;
+exports.getPercentageDiff = (previous, next) => Math.floor((previous / next) * 100);
 exports.getLhrComparison = (previousResult, nextResult) => {
     const fields = [
         'first-contentful-paint',
@@ -40,20 +40,19 @@ exports.getLhrComparison = (previousResult, nextResult) => {
             title: prevAudit.title,
             previousScore: prevAudit.displayValue,
             nextScore: nextAudit.displayValue,
-            difference: prevAudit.score - nextAudit.score,
+            difference: exports.getPercentageDiff(prevAudit.score, nextAudit.score),
         };
     });
     const performanceResult = {
         title: 'Performance',
         previousScore: previousResult.categories.performance.score,
         nextScore: nextResult.categories.performance.score,
-        difference: nextResult.categories.performance.score -
-            previousResult.categories.performance.score,
+        difference: exports.getPercentageDiff(nextResult.categories.performance.score, previousResult.categories.performance.score),
     };
     normalizedResult.unshift(performanceResult);
     return normalizedResult;
 };
-const tableHeaderTitles = ['Metric', 'Base', 'Current', '+/-'];
+const tableHeaderTitles = ['Metric', 'Base', 'Current', '+/- %'];
 exports.getLighthouseResultsTable = (reports) => `
   | ${tableHeaderTitles.join(' | ')} |
   | ${tableHeaderTitles.map(() => '---').join(' | ')} |
@@ -62,9 +61,13 @@ exports.getLighthouseResultsTable = (reports) => `
     report.title,
     report.previousScore,
     report.nextScore,
-    report.difference,
+    `${report.difference} %`,
 ])
     .map((columns) => `| ${columns.join(' | ')} |`)
     .join('\n')}
 `;
+const getLighthouseReport = async (url) => {
+    // const table = getLighthouseResultsTable(reports);
+};
+const getLighthouseReportForUrls = (urls) => { };
 const normalizeLighthouseResults = () => { };
