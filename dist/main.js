@@ -19,7 +19,7 @@ async function run() {
     // const lighthouseResultBase = await getLighthouseResult(urls[0])
     await utils_1.createComment(octokit, `
     \`\`\`json
-      ${JSON.stringify(lighthouseResultCurrent.audits)}
+      ${JSON.stringify(lighthouseResultCurrent)}
     \`\`\`
   `);
 }
