@@ -10,7 +10,7 @@ async function run() {
     // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
     const lighthouseResultCurrent = await utils_1.getLighthouseResult('https://amaro.com/br/pt/');
     //
-    console.log(Object.keys(lighthouseResultCurrent), lighthouseResultCurrent.lhr);
+    console.log(Object.keys(lighthouseResultCurrent), lighthouseResultCurrent.lhr, lighthouseResultCurrent);
     // await checkoutBaseBranch()
     // await installDependencies()
     // await buildAndServe()
