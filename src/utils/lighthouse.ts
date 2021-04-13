@@ -14,11 +14,15 @@ async function getLighthouseResult(url: string) {
   return lighthouseResult as LighthouseResult;
 }
 
-export const getLighthouseResults = (urls: string[]) =>
-  Promise.all(urls.map((url) => getLighthouseResult(url)));
+export const getLighthouseResults = async (urls: string[]) => {
+  for (const url of urls) {
+    await getLighthouseResult(url);
+  }
+};
 
-export const getPercentageDiff = (previous: number, next: number) =>
-  percentageChange(previous, next, false);
+export const getPercentageDiff = (previous: number, next: number) => {
+  return percentageChange(previous, next, false);
+};
 
 const MAX_DIFFERENCE_THRESHOLD = 5;
 

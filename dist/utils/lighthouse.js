@@ -35,9 +35,15 @@ async function getLighthouseResult(url) {
     await chrome.kill();
     return lighthouseResult;
 }
-const getLighthouseResults = (urls) => Promise.all(urls.map((url) => getLighthouseResult(url)));
+const getLighthouseResults = async (urls) => {
+    for (const url of urls) {
+        await getLighthouseResult(url);
+    }
+};
 exports.getLighthouseResults = getLighthouseResults;
-const getPercentageDiff = (previous, next) => percent_change_1.default(previous, next, false);
+const getPercentageDiff = (previous, next) => {
+    return percent_change_1.default(previous, next, false);
+};
 exports.getPercentageDiff = getPercentageDiff;
 const MAX_DIFFERENCE_THRESHOLD = 5;
 const getLhrComparison = (previousResult, nextResult) => {
