@@ -11,6 +11,11 @@ if (!pullRequest) {
 export const getActionInputs = () => ({
   urls: getInput('urls', { required: true }).split(','),
   token: getInput('repo-token', { required: true }),
+  maxPercentageThreshold: Number(
+    getInput('maxPercentageThreshold', {
+      // required: true,
+    }),
+  ),
 });
 
 export const installDependencies = () => exec('npm ci');

@@ -15,35 +15,17 @@ import {
 import killPort from 'kill-port';
 
 async function run() {
-  const { urls, token } = getActionInputs();
-  console.log({ urls, token });
+  const { urls, token, maxPercentageThreshold } = getActionInputs();
 
   const octokit = getOctokit(token);
 
   const killServer = () => killPort(3000, 'tcp');
-  // await installDependencies();
-  // await buildAndServe();
-  // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
-  // const lighthouseResultCurrent = await getLighthouseResult(
-  //   'https://amaro.com/br/pt/',
-  // );
 
-  // const reports = getLhrComparison(
-  //   lighthouseResultCurrent,
-  //   lighthouseResultCurrent,
-  // );
-
-  // const table = getLighthouseResultsTable(reports);
-
-  // await createComment(octokit, table);
-
-  //
   await installDependencies();
   await buildAndServe();
   const lighthouseResultBase = await getLighthouseResult(
     'http://localhost:3000/',
   );
-  // console.log(lighthouseResultBase);
 
   await killServer();
   await checkoutBaseBranch();
@@ -62,16 +44,6 @@ async function run() {
   await createComment(octokit, table);
 
   await killServer();
-  // await createComment(
-  //   octokit,
-  //   `
-  //   \`\`\`json
-  //     ${JSON.stringify(
-  //       lighthouseResultCurrent.audits['largest-contentful-paint'],
-  //     )}
-  //   \`\`\`
-  // `,
-  // );
 }
 
 run().catch((error) => {

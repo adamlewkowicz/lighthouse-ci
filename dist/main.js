@@ -9,27 +9,12 @@ const utils_1 = require("./utils");
 const lighthouse_1 = require("./utils/lighthouse");
 const kill_port_1 = __importDefault(require("kill-port"));
 async function run() {
-    const { urls, token } = utils_1.getActionInputs();
-    console.log({ urls, token });
+    const { urls, token, maxPercentageThreshold } = utils_1.getActionInputs();
     const octokit = github_1.getOctokit(token);
     const killServer = () => kill_port_1.default(3000, 'tcp');
-    // await installDependencies();
-    // await buildAndServe();
-    // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
-    // const lighthouseResultCurrent = await getLighthouseResult(
-    //   'https://amaro.com/br/pt/',
-    // );
-    // const reports = getLhrComparison(
-    //   lighthouseResultCurrent,
-    //   lighthouseResultCurrent,
-    // );
-    // const table = getLighthouseResultsTable(reports);
-    // await createComment(octokit, table);
-    //
     await utils_1.installDependencies();
     await utils_1.buildAndServe();
     const lighthouseResultBase = await lighthouse_1.getLighthouseResult('http://localhost:3000/');
-    // console.log(lighthouseResultBase);
     await killServer();
     await utils_1.checkoutBaseBranch();
     await utils_1.installDependencies();
@@ -39,16 +24,6 @@ async function run() {
     const table = lighthouse_1.getLighthouseResultsTable(reports);
     await utils_1.createComment(octokit, table);
     await killServer();
-    // await createComment(
-    //   octokit,
-    //   `
-    //   \`\`\`json
-    //     ${JSON.stringify(
-    //       lighthouseResultCurrent.audits['largest-contentful-paint'],
-    //     )}
-    //   \`\`\`
-    // `,
-    // );
 }
 run().catch((error) => {
     core_1.setFailed(error.message);

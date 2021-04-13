@@ -37,7 +37,7 @@ async function getLighthouseResult(url) {
     return lighthouseResult;
 }
 exports.getLighthouseResult = getLighthouseResult;
-const getPercentageDiff = (previous, next) => 100 - Math.floor((previous / next) * 100);
+const getPercentageDiff = (previous, next) => Math.floor((previous / next) * 100) - 100;
 exports.getPercentageDiff = getPercentageDiff;
 const MAX_DIFFERENCE_THRESHOLD = 5;
 const getLhrComparison = (previousResult, nextResult) => {
@@ -82,7 +82,7 @@ const getLighthouseResultsTable = (reports) => `
     report.title,
     report.previousScore,
     report.nextScore,
-    `${report.difference >= 0 ? '+' : '-'}${report.difference}%`,
+    `${report.difference > 0 ? '+' : '--'}${report.difference}${report.difference !== 0 ? '%' : ''}`,
     report.isAboveThreshold ? '🚫' : '✅',
 ])
     .map((columns) => `| ${columns.join(' | ')} |`)

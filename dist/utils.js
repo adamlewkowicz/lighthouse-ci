@@ -11,6 +11,9 @@ if (!exports.pullRequest) {
 const getActionInputs = () => ({
     urls: core_1.getInput('urls', { required: true }).split(','),
     token: core_1.getInput('repo-token', { required: true }),
+    maxPercentageThreshold: Number(core_1.getInput('maxPercentageThreshold', {
+    // required: true,
+    })),
 });
 exports.getActionInputs = getActionInputs;
 const installDependencies = () => exec_1.exec('npm ci');

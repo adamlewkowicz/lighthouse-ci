@@ -16,7 +16,7 @@ export async function getLighthouseResult(url: string) {
 }
 
 export const getPercentageDiff = (previous: number, next: number) =>
-  100 - Math.floor((previous / next) * 100);
+  Math.floor((previous / next) * 100) - 100;
 
 const MAX_DIFFERENCE_THRESHOLD = 5;
 
@@ -75,7 +75,9 @@ export const getLighthouseResultsTable = (reports: Item[]) => `
       report.title,
       report.previousScore,
       report.nextScore,
-      `${report.difference >= 0 ? '+' : '-'}${report.difference}%`,
+      `${report.difference > 0 ? '+' : '--'}${report.difference}${
+        report.difference !== 0 ? '%' : ''
+      }`,
       report.isAboveThreshold ? '🚫' : '✅',
     ])
     .map((columns) => `| ${columns.join(' | ')} |`)
