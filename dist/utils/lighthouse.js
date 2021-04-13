@@ -75,7 +75,7 @@ const getLhrComparison = (previousResult, nextResult) => {
         const prevAudit = previousResult.audits[field];
         const nextAudit = nextResult.audits[field];
         console.log({ prevAudit, nextAudit });
-        const percentageDiff = exports.getPercentageDiff(prevAudit.numericValue, nextAudit.numericValue);
+        const percentageDiff = Math.round(exports.getPercentageDiff(prevAudit.numericValue, nextAudit.numericValue));
         return {
             title: prevAudit.title,
             previousScore: prevAudit.displayValue,
@@ -84,7 +84,7 @@ const getLhrComparison = (previousResult, nextResult) => {
             isAboveThreshold: percentageDiff > MAX_DIFFERENCE_THRESHOLD,
         };
     });
-    const performancePercentageDiff = exports.getPercentageDiff(nextResult.categories.performance.score, previousResult.categories.performance.score);
+    const performancePercentageDiff = Math.round(exports.getPercentageDiff(nextResult.categories.performance.score, previousResult.categories.performance.score));
     const performanceResult = {
         title: 'Performance',
         previousScore: previousResult.categories.performance.score,
