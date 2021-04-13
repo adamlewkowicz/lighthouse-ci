@@ -71,15 +71,31 @@ export const getLighthouseResultsTable = (reports: Item[]) => `
   | ${tableHeaderTitles.join(' | ')} |
   | ${tableHeaderTitles.map(() => '---').join(' | ')} |
   ${reports
-    .map((report) => [
-      report.title,
-      report.previousScore,
-      report.nextScore,
-      `${report.difference > 0 ? '+' : '--'}${report.difference}${
-        report.difference !== 0 ? '%' : ''
-      }`,
-      report.isAboveThreshold ? '🚫' : '✅',
-    ])
+    .map((report) => {
+      let formattedResult: string;
+
+      if (report.difference === 0) {
+        formattedResult = '--';
+      } else {
+        const formattedDifference = `${report.difference > 0 ? '+' : ''}${
+          report.difference
+        }`;
+
+        if (report.isAboveThreshold) {
+          formattedResult = `**${formattedDifference}**`;
+        } else {
+          formattedResult = formattedDifference;
+        }
+      }
+
+      return [
+        report.title,
+        report.previousScore,
+        report.nextScore,
+        formattedResult,
+        report.isAboveThreshold ? '🚫' : '✅',
+      ];
+    })
     .map((columns) => `| ${columns.join(' | ')} |`)
     .join('\n')}
 `;
