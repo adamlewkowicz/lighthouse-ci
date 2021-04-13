@@ -3,9 +3,7 @@ import * as chromeLauncher from 'chrome-launcher';
 import { LighthouseResult } from './types';
 import percentageChange from 'percent-change';
 
-export const compareResults = () => {};
-
-export async function getLighthouseResult(url: string) {
+async function getLighthouseResult(url: string) {
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
   const { lhr: lighthouseResult } = await lighthouse(url, {
     port: chrome.port,

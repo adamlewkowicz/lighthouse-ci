@@ -8,7 +8,6 @@ import {
   installDependencies,
 } from './utils';
 import {
-  getLighthouseResult,
   getLhrComparison,
   getLighthouseResultsTable,
   getLighthouseResults,
@@ -25,19 +24,15 @@ async function run() {
   await installDependencies();
   await buildAndServe();
   const lighthouseResultsBase = await getLighthouseResults(urls);
-  // const lighthouseResultBase = await getLighthouseResult(
-  //   'http://localhost:3000/',
-  // );
-  //
+
+  console.log({ lighthouseResultsBase });
+
   await killServer();
   await checkoutBaseBranch();
 
   await installDependencies();
   await buildAndServe();
   const lighthouseResultsCurrent = await getLighthouseResults(urls);
-  // const lighthouseResultCurrent = await getLighthouseResult(
-  //   'http://localhost:3000/',
-  // );
 
   const markdownResult = urls.reduce((markdown, url, index) => {
     const reports = getLhrComparison(
@@ -46,7 +41,7 @@ async function run() {
     );
     const table = getLighthouseResultsTable(reports);
 
-    markdown += `Lighthouse result for *${url}*:
+    markdown += `Lighthouse result for *${url}*
     ${table}
     \n\n
     `.trim();

@@ -9,10 +9,12 @@ if (!pullRequest) {
 }
 
 export const getActionInputs = () => ({
-  urls: getInput('urls', { required: true }).split(','),
+  urls: getInput('urls', { required: true })
+    .split(',')
+    .map((url) => url.trim()),
   token: getInput('repo-token', { required: true }),
   maxPercentageThreshold: Number(
-    getInput('maxPercentageThreshold', {
+    getInput('max-percentage-threshold', {
       // required: true,
     }),
   ),

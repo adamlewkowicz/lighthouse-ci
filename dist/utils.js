@@ -9,9 +9,11 @@ if (!exports.pullRequest) {
     throw new Error('No pull request found');
 }
 const getActionInputs = () => ({
-    urls: core_1.getInput('urls', { required: true }).split(','),
+    urls: core_1.getInput('urls', { required: true })
+        .split(',')
+        .map((url) => url.trim()),
     token: core_1.getInput('repo-token', { required: true }),
-    maxPercentageThreshold: Number(core_1.getInput('maxPercentageThreshold', {
+    maxPercentageThreshold: Number(core_1.getInput('max-percentage-threshold', {
     // required: true,
     })),
 });

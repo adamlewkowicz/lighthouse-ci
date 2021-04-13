@@ -15,22 +15,16 @@ async function run() {
     await utils_1.installDependencies();
     await utils_1.buildAndServe();
     const lighthouseResultsBase = await lighthouse_1.getLighthouseResults(urls);
-    // const lighthouseResultBase = await getLighthouseResult(
-    //   'http://localhost:3000/',
-    // );
-    //
+    console.log({ lighthouseResultsBase });
     await killServer();
     await utils_1.checkoutBaseBranch();
     await utils_1.installDependencies();
     await utils_1.buildAndServe();
     const lighthouseResultsCurrent = await lighthouse_1.getLighthouseResults(urls);
-    // const lighthouseResultCurrent = await getLighthouseResult(
-    //   'http://localhost:3000/',
-    // );
     const markdownResult = urls.reduce((markdown, url, index) => {
         const reports = lighthouse_1.getLhrComparison(lighthouseResultsBase[index], lighthouseResultsCurrent[index]);
         const table = lighthouse_1.getLighthouseResultsTable(reports);
-        markdown += `Lighthouse result for *${url}*:
+        markdown += `Lighthouse result for *${url}*
     ${table}
     \n\n
     `.trim();

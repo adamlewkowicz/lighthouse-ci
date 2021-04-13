@@ -22,12 +22,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLighthouseResultsTable = exports.getLhrComparison = exports.getPercentageDiff = exports.getLighthouseResults = exports.getLighthouseResult = exports.compareResults = void 0;
+exports.getLighthouseResultsTable = exports.getLhrComparison = exports.getPercentageDiff = exports.getLighthouseResults = void 0;
 const lighthouse_1 = __importDefault(require("lighthouse"));
 const chromeLauncher = __importStar(require("chrome-launcher"));
 const percent_change_1 = __importDefault(require("percent-change"));
-const compareResults = () => { };
-exports.compareResults = compareResults;
 async function getLighthouseResult(url) {
     const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
     const { lhr: lighthouseResult } = await lighthouse_1.default(url, {
@@ -37,7 +35,6 @@ async function getLighthouseResult(url) {
     await chrome.kill();
     return lighthouseResult;
 }
-exports.getLighthouseResult = getLighthouseResult;
 const getLighthouseResults = (urls) => Promise.all(urls.map((url) => getLighthouseResult(url)));
 exports.getLighthouseResults = getLighthouseResults;
 const getPercentageDiff = (previous, next) => percent_change_1.default(previous, next, false);
