@@ -45,6 +45,8 @@ const getLighthouseResults = async (urls) => {
 };
 exports.getLighthouseResults = getLighthouseResults;
 const getPercentageDiff = (previous, next) => {
+    // const increase = next - previous;
+    // return (increase / previous) * 100;
     return percent_change_1.default(previous, next, false);
 };
 exports.getPercentageDiff = getPercentageDiff;
@@ -61,6 +63,7 @@ const getLhrComparison = (previousResult, nextResult) => {
     const normalizedResult = fields.map((field) => {
         const prevAudit = previousResult.audits[field];
         const nextAudit = nextResult.audits[field];
+        console.log({ prevAudit, nextAudit });
         const percentageDiff = exports.getPercentageDiff(prevAudit.score, nextAudit.score);
         return {
             title: prevAudit.title,

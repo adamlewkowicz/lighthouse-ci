@@ -27,6 +27,9 @@ export const getLighthouseResults = async (
 };
 
 export const getPercentageDiff = (previous: number, next: number) => {
+  // const increase = next - previous;
+  // return (increase / previous) * 100;
+
   return percentageChange(previous, next, false);
 };
 
@@ -48,6 +51,8 @@ export const getLhrComparison = (
   const normalizedResult = fields.map<Item>((field) => {
     const prevAudit = previousResult.audits[field];
     const nextAudit = nextResult.audits[field];
+    console.log({ prevAudit, nextAudit });
+
     const percentageDiff = getPercentageDiff(prevAudit.score, nextAudit.score);
 
     return {
