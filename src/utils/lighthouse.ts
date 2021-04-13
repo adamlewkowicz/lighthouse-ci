@@ -25,15 +25,34 @@ export const getLighthouseResults = async (
   return results;
 };
 
+export const getMarkdownResults = (
+  urls: string[],
+  resultsBase: LighthouseResult[],
+  resultsCurrent: LighthouseResult[],
+): string => {
+  const markdownResult = urls.reduce((markdown, url, index) => {
+    const reports = getLhrComparison(resultsBase[index], resultsCurrent[index]);
+    const table = getLighthouseResultsTable(reports);
+
+    markdown += `Lighthouse result for *${url}*
+    ${table}
+    \n\n
+    `.trim();
+
+    return markdown;
+  }, '');
+
+  return markdownResult;
+};
+
 export const getPercentageDiff = (previous: number, next: number) => {
   const increase = next - previous;
   return (increase / previous) * 100;
-  // return percentageChange(previous, next, false);
 };
 
 const MAX_DIFFERENCE_THRESHOLD = 5;
 
-export const getLhrComparison = (
+const getLhrComparison = (
   previousResult: LighthouseResult,
   nextResult: LighthouseResult,
 ): Item[] => {
@@ -85,7 +104,7 @@ export const getLhrComparison = (
 
 const tableHeaderTitles = ['Metric', 'Base', 'Current', '+/- %', ''];
 
-export const getLighthouseResultsTable = (reports: Item[]) => `
+const getLighthouseResultsTable = (reports: Item[]) => `
   | ${tableHeaderTitles.join(' | ')} |
   | ${tableHeaderTitles.map(() => '---').join(' | ')} |
   ${reports

@@ -1,18 +1,14 @@
 import { setFailed } from '@actions/core';
 import { getOctokit } from '@actions/github';
+import killPort from 'kill-port';
+import { getLighthouseResults, getMarkdownResults } from './utils/lighthouse';
 import {
   buildAndServe,
   checkoutBaseBranch,
   createComment,
   getActionInputs,
   installDependencies,
-} from './utils';
-import {
-  getLhrComparison,
-  getLighthouseResultsTable,
-  getLighthouseResults,
-} from './utils/lighthouse';
-import killPort from 'kill-port';
+} from './utils/main';
 
 async function run() {
   const { urls: _urls, token, maxPercentageThreshold } = getActionInputs();
@@ -26,8 +22,6 @@ async function run() {
   await buildAndServe();
   const lighthouseResultsBase = await getLighthouseResults(urls);
 
-  console.log({ lighthouseResultsBase });
-
   await killServer();
   await checkoutBaseBranch();
 
@@ -35,21 +29,11 @@ async function run() {
   await buildAndServe();
   const lighthouseResultsCurrent = await getLighthouseResults(urls);
 
-  const markdownResult = urls.reduce((markdown, url, index) => {
-    const reports = getLhrComparison(
-      lighthouseResultsBase[index],
-      lighthouseResultsCurrent[index],
-    );
-    const table = getLighthouseResultsTable(reports);
-
-    markdown += `Lighthouse result for *${url}*
-    ${table}
-    \n\n
-    `.trim();
-
-    return markdown;
-  }, '');
-
+  const markdownResult = getMarkdownResults(
+    urls,
+    lighthouseResultsBase,
+    lighthouseResultsCurrent,
+  );
   await createComment(octokit, markdownResult);
 
   await killServer();
