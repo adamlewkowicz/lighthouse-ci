@@ -14,15 +14,29 @@ async function run() {
     const killServer = () => kill_port_1.default(3000, 'tcp');
     await utils_1.installDependencies();
     await utils_1.buildAndServe();
-    const lighthouseResultBase = await lighthouse_1.getLighthouseResult('http://localhost:3000/');
+    const lighthouseResultsBase = await lighthouse_1.getLighthouseResults(urls);
+    // const lighthouseResultBase = await getLighthouseResult(
+    //   'http://localhost:3000/',
+    // );
+    //
     await killServer();
     await utils_1.checkoutBaseBranch();
     await utils_1.installDependencies();
     await utils_1.buildAndServe();
-    const lighthouseResultCurrent = await lighthouse_1.getLighthouseResult('http://localhost:3000/');
-    const reports = lighthouse_1.getLhrComparison(lighthouseResultBase, lighthouseResultCurrent);
-    const table = lighthouse_1.getLighthouseResultsTable(reports);
-    await utils_1.createComment(octokit, table);
+    const lighthouseResultsCurrent = await lighthouse_1.getLighthouseResults(urls);
+    // const lighthouseResultCurrent = await getLighthouseResult(
+    //   'http://localhost:3000/',
+    // );
+    const markdownResult = urls.reduce((markdown, url, index) => {
+        const reports = lighthouse_1.getLhrComparison(lighthouseResultsBase[index], lighthouseResultsCurrent[index]);
+        const table = lighthouse_1.getLighthouseResultsTable(reports);
+        markdown += `Lighthouse result for *${url}*:
+    ${table}
+    \n\n
+    `.trim();
+        return markdown;
+    }, '');
+    await utils_1.createComment(octokit, markdownResult);
     await killServer();
 }
 run().catch((error) => {

@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLighthouseResultsTable = exports.getLhrComparison = exports.getPercentageDiff = exports.getLighthouseResult = exports.compareResults = void 0;
+exports.getLighthouseResultsTable = exports.getLhrComparison = exports.getPercentageDiff = exports.getLighthouseResults = exports.getLighthouseResult = exports.compareResults = void 0;
 const lighthouse_1 = __importDefault(require("lighthouse"));
 const chromeLauncher = __importStar(require("chrome-launcher"));
 const percent_change_1 = __importDefault(require("percent-change"));
@@ -38,6 +38,8 @@ async function getLighthouseResult(url) {
     return lighthouseResult;
 }
 exports.getLighthouseResult = getLighthouseResult;
+const getLighthouseResults = (urls) => Promise.all(urls.map((url) => getLighthouseResult(url)));
+exports.getLighthouseResults = getLighthouseResults;
 const getPercentageDiff = (previous, next) => percent_change_1.default(previous, next, false);
 exports.getPercentageDiff = getPercentageDiff;
 const MAX_DIFFERENCE_THRESHOLD = 5;

@@ -16,6 +16,9 @@ export async function getLighthouseResult(url: string) {
   return lighthouseResult as LighthouseResult;
 }
 
+export const getLighthouseResults = (urls: string[]) =>
+  Promise.all(urls.map((url) => getLighthouseResult(url)));
+
 export const getPercentageDiff = (previous: number, next: number) =>
   percentageChange(previous, next, false);
 

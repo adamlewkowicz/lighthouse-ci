@@ -11,6 +11,7 @@ import {
   getLighthouseResult,
   getLhrComparison,
   getLighthouseResultsTable,
+  getLighthouseResults,
 } from './utils/lighthouse';
 import killPort from 'kill-port';
 
@@ -23,25 +24,37 @@ async function run() {
 
   await installDependencies();
   await buildAndServe();
-  const lighthouseResultBase = await getLighthouseResult(
-    'http://localhost:3000/',
-  );
-
+  const lighthouseResultsBase = await getLighthouseResults(urls);
+  // const lighthouseResultBase = await getLighthouseResult(
+  //   'http://localhost:3000/',
+  // );
+  //
   await killServer();
   await checkoutBaseBranch();
 
   await installDependencies();
   await buildAndServe();
-  const lighthouseResultCurrent = await getLighthouseResult(
-    'http://localhost:3000/',
-  );
+  const lighthouseResultsCurrent = await getLighthouseResults(urls);
+  // const lighthouseResultCurrent = await getLighthouseResult(
+  //   'http://localhost:3000/',
+  // );
 
-  const reports = getLhrComparison(
-    lighthouseResultBase,
-    lighthouseResultCurrent,
-  );
-  const table = getLighthouseResultsTable(reports);
-  await createComment(octokit, table);
+  const markdownResult = urls.reduce((markdown, url, index) => {
+    const reports = getLhrComparison(
+      lighthouseResultsBase[index],
+      lighthouseResultsCurrent[index],
+    );
+    const table = getLighthouseResultsTable(reports);
+
+    markdown += `Lighthouse result for *${url}*:
+    ${table}
+    \n\n
+    `.trim();
+
+    return markdown;
+  }, '');
+
+  await createComment(octokit, markdownResult);
 
   await killServer();
 }
