@@ -70,9 +70,8 @@ const getLhrComparison = (
     const nextAudit = nextResult.audits[field];
     console.log({ prevAudit, nextAudit });
 
-    const percentageDiff = getPercentageDiff(
-      prevAudit.numericValue,
-      nextAudit.numericValue,
+    const percentageDiff = Math.round(
+      getPercentageDiff(prevAudit.numericValue, nextAudit.numericValue),
     );
 
     return {
@@ -84,9 +83,11 @@ const getLhrComparison = (
     };
   });
 
-  const performancePercentageDiff = getPercentageDiff(
-    nextResult.categories.performance.score,
-    previousResult.categories.performance.score,
+  const performancePercentageDiff = Math.round(
+    getPercentageDiff(
+      nextResult.categories.performance.score,
+      previousResult.categories.performance.score,
+    ),
   );
 
   const performanceResult = {
