@@ -30,6 +30,7 @@
     "@actions/exec": "^1.0.4",
     "@actions/github": "^4.0.0",
     "chrome-launcher": "^0.13.4",
+    "kill-port": "^1.6.1",
     "lighthouse": "^7.3.0"
   },
   "devDependencies": {

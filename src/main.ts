@@ -12,6 +12,7 @@ import {
   getLhrComparison,
   getLighthouseResultsTable,
 } from './utils/lighthouse';
+import killPort from 'kill-port';
 
 async function run() {
   const { urls, token } = getActionInputs();
@@ -41,6 +42,8 @@ async function run() {
     'http://localhost:3000/',
   );
   console.log(lighthouseResultBase);
+
+  await killPort(3000, 'tcp');
 
   await checkoutBaseBranch();
 

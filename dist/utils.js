@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createComment = exports.checkoutBaseBranch = exports.buildAndServe = exports.installDependencies = exports.getActionInputs = exports.pullRequest = void 0;
 const core_1 = require("@actions/core");
 const exec_1 = require("@actions/exec");
 const github_1 = require("@actions/github");
@@ -7,17 +8,20 @@ exports.pullRequest = github_1.context.payload.pull_request;
 if (!exports.pullRequest) {
     throw new Error('No pull request found');
 }
-exports.getActionInputs = () => ({
+const getActionInputs = () => ({
     urls: core_1.getInput('urls', { required: true }).split(','),
     token: core_1.getInput('repo-token', { required: true }),
 });
-exports.installDependencies = () => exec_1.exec('npm ci');
-exports.buildAndServe = async () => {
+exports.getActionInputs = getActionInputs;
+const installDependencies = () => exec_1.exec('npm ci');
+exports.installDependencies = installDependencies;
+const buildAndServe = async () => {
     await exec_1.exec('npm run build');
     exec_1.exec('npm run serve');
     // exec('npm run build:serve')
 };
-exports.checkoutBaseBranch = async () => {
+exports.buildAndServe = buildAndServe;
+const checkoutBaseBranch = async () => {
     let baseRef;
     try {
         baseRef = github_1.context.payload.base.ref;
@@ -52,10 +56,12 @@ exports.checkoutBaseBranch = async () => {
         await exec_1.exec(`git reset --hard ${exports.pullRequest.base.sha}`);
     }
 };
-exports.createComment = async (octokit, content) => {
+exports.checkoutBaseBranch = checkoutBaseBranch;
+const createComment = async (octokit, content) => {
     await octokit.issues.createComment({
         ...github_1.context.repo,
         issue_number: exports.pullRequest.number,
         body: content,
     });
 };
+exports.createComment = createComment;
