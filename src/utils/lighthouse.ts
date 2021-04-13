@@ -14,10 +14,16 @@ async function getLighthouseResult(url: string) {
   return lighthouseResult as LighthouseResult;
 }
 
-export const getLighthouseResults = async (urls: string[]) => {
+export const getLighthouseResults = async (
+  urls: string[],
+): Promise<LighthouseResult[]> => {
+  const results: LighthouseResult[] = [];
+
   for (const url of urls) {
-    await getLighthouseResult(url);
+    const result = await getLighthouseResult(url);
+    results.push(result);
   }
+  return results;
 };
 
 export const getPercentageDiff = (previous: number, next: number) => {
@@ -113,11 +119,3 @@ interface Item {
   difference: string | number;
   isAboveThreshold: boolean;
 }
-
-const getLighthouseReport = async (url: string) => {
-  // const table = getLighthouseResultsTable(reports);
-};
-
-const getLighthouseReportForUrls = (urls: string[]) => {};
-
-const normalizeLighthouseResults = () => {};

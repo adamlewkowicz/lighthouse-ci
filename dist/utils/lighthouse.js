@@ -36,9 +36,12 @@ async function getLighthouseResult(url) {
     return lighthouseResult;
 }
 const getLighthouseResults = async (urls) => {
+    const results = [];
     for (const url of urls) {
-        await getLighthouseResult(url);
+        const result = await getLighthouseResult(url);
+        results.push(result);
     }
+    return results;
 };
 exports.getLighthouseResults = getLighthouseResults;
 const getPercentageDiff = (previous, next) => {
@@ -110,8 +113,3 @@ const getLighthouseResultsTable = (reports) => `
     .join('\n')}
 `;
 exports.getLighthouseResultsTable = getLighthouseResultsTable;
-const getLighthouseReport = async (url) => {
-    // const table = getLighthouseResultsTable(reports);
-};
-const getLighthouseReportForUrls = (urls) => { };
-const normalizeLighthouseResults = () => { };

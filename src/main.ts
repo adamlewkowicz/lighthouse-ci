@@ -15,7 +15,8 @@ import {
 import killPort from 'kill-port';
 
 async function run() {
-  const { urls, token, maxPercentageThreshold } = getActionInputs();
+  const { urls: _urls, token, maxPercentageThreshold } = getActionInputs();
+  const urls = [_urls[0]];
 
   const octokit = getOctokit(token);
 
