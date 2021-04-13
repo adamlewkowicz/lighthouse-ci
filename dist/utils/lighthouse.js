@@ -25,6 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getLighthouseResultsTable = exports.getLhrComparison = exports.getPercentageDiff = exports.getLighthouseResult = exports.compareResults = void 0;
 const lighthouse_1 = __importDefault(require("lighthouse"));
 const chromeLauncher = __importStar(require("chrome-launcher"));
+const percent_change_1 = __importDefault(require("percent-change"));
 const compareResults = () => { };
 exports.compareResults = compareResults;
 async function getLighthouseResult(url) {
@@ -37,7 +38,7 @@ async function getLighthouseResult(url) {
     return lighthouseResult;
 }
 exports.getLighthouseResult = getLighthouseResult;
-const getPercentageDiff = (previous, next) => Math.floor((previous / next) * 100) - 100;
+const getPercentageDiff = (previous, next) => percent_change_1.default(previous, next, false);
 exports.getPercentageDiff = getPercentageDiff;
 const MAX_DIFFERENCE_THRESHOLD = 5;
 const getLhrComparison = (previousResult, nextResult) => {
@@ -78,13 +79,28 @@ const getLighthouseResultsTable = (reports) => `
   | ${tableHeaderTitles.join(' | ')} |
   | ${tableHeaderTitles.map(() => '---').join(' | ')} |
   ${reports
-    .map((report) => [
-    report.title,
-    report.previousScore,
-    report.nextScore,
-    `${report.difference > 0 ? '+' : '--'}${report.difference}${report.difference !== 0 ? '%' : ''}`,
-    report.isAboveThreshold ? '🚫' : '✅',
-])
+    .map((report) => {
+    let formattedResult;
+    if (report.difference === 0) {
+        formattedResult = '--';
+    }
+    else {
+        const formattedDifference = `${report.difference > 0 ? '+' : ''}${report.difference}`;
+        if (report.isAboveThreshold) {
+            formattedResult = `**${formattedDifference}**`;
+        }
+        else {
+            formattedResult = formattedDifference;
+        }
+    }
+    return [
+        report.title,
+        report.previousScore,
+        report.nextScore,
+        formattedResult,
+        report.isAboveThreshold ? '🚫' : '✅',
+    ];
+})
     .map((columns) => `| ${columns.join(' | ')} |`)
     .join('\n')}
 `;

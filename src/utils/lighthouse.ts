@@ -1,6 +1,7 @@
 import lighthouse from 'lighthouse';
 import * as chromeLauncher from 'chrome-launcher';
 import { LighthouseResult } from './types';
+import percentageChange from 'percent-change';
 
 export const compareResults = () => {};
 
@@ -16,7 +17,7 @@ export async function getLighthouseResult(url: string) {
 }
 
 export const getPercentageDiff = (previous: number, next: number) =>
-  Math.floor((previous / next) * 100) - 100;
+  percentageChange(previous, next, false);
 
 const MAX_DIFFERENCE_THRESHOLD = 5;
 

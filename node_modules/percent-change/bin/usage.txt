@@ -1,0 +1,9 @@
+percent-change
+
+  usage: percent-change <from> <to>
+
+  options:
+    -h, --help                      show help and usage
+    -v, --version                   show version
+    -p, --places <places>           set number of decimal places
+    -f, --format                    format output
