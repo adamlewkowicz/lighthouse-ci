@@ -19,6 +19,8 @@ async function run() {
   console.log({ urls, token });
 
   const octokit = getOctokit(token);
+
+  const killServer = () => killPort(3000, 'tcp');
   // await installDependencies();
   // await buildAndServe();
   // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
@@ -41,10 +43,9 @@ async function run() {
   const lighthouseResultBase = await getLighthouseResult(
     'http://localhost:3000/',
   );
-  console.log(lighthouseResultBase);
+  // console.log(lighthouseResultBase);
 
-  await killPort(3000, 'tcp');
-
+  await killServer();
   await checkoutBaseBranch();
 
   await installDependencies();
@@ -54,12 +55,13 @@ async function run() {
   );
 
   const reports = getLhrComparison(
-    lighthouseResultCurrent,
+    lighthouseResultBase,
     lighthouseResultCurrent,
   );
   const table = getLighthouseResultsTable(reports);
   await createComment(octokit, table);
 
+  await killServer();
   // await createComment(
   //   octokit,
   //   `

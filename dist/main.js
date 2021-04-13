@@ -12,6 +12,7 @@ async function run() {
     const { urls, token } = utils_1.getActionInputs();
     console.log({ urls, token });
     const octokit = github_1.getOctokit(token);
+    const killServer = () => kill_port_1.default(3000, 'tcp');
     // await installDependencies();
     // await buildAndServe();
     // const lighthouseResultCurrent = await getLighthouseResult(urls[0]);
@@ -28,15 +29,16 @@ async function run() {
     await utils_1.installDependencies();
     await utils_1.buildAndServe();
     const lighthouseResultBase = await lighthouse_1.getLighthouseResult('http://localhost:3000/');
-    console.log(lighthouseResultBase);
-    await kill_port_1.default(3000, 'tcp');
+    // console.log(lighthouseResultBase);
+    await killServer();
     await utils_1.checkoutBaseBranch();
     await utils_1.installDependencies();
     await utils_1.buildAndServe();
     const lighthouseResultCurrent = await lighthouse_1.getLighthouseResult('http://localhost:3000/');
-    const reports = lighthouse_1.getLhrComparison(lighthouseResultCurrent, lighthouseResultCurrent);
+    const reports = lighthouse_1.getLhrComparison(lighthouseResultBase, lighthouseResultCurrent);
     const table = lighthouse_1.getLighthouseResultsTable(reports);
     await utils_1.createComment(octokit, table);
+    await killServer();
     // await createComment(
     //   octokit,
     //   `
