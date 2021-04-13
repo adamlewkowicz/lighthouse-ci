@@ -25,7 +25,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getLighthouseResultsTable = exports.getLhrComparison = exports.getPercentageDiff = exports.getLighthouseResults = void 0;
 const lighthouse_1 = __importDefault(require("lighthouse"));
 const chromeLauncher = __importStar(require("chrome-launcher"));
-const percent_change_1 = __importDefault(require("percent-change"));
 async function getLighthouseResult(url) {
     const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
     const { lhr: lighthouseResult } = await lighthouse_1.default(url, {
@@ -47,7 +46,7 @@ exports.getLighthouseResults = getLighthouseResults;
 const getPercentageDiff = (previous, next) => {
     const increase = next - previous;
     return (increase / previous) * 100;
-    return percent_change_1.default(previous, next, false);
+    // return percentageChange(previous, next, false);
 };
 exports.getPercentageDiff = getPercentageDiff;
 const MAX_DIFFERENCE_THRESHOLD = 5;
@@ -64,7 +63,7 @@ const getLhrComparison = (previousResult, nextResult) => {
         const prevAudit = previousResult.audits[field];
         const nextAudit = nextResult.audits[field];
         console.log({ prevAudit, nextAudit });
-        const percentageDiff = exports.getPercentageDiff(prevAudit.score, nextAudit.score);
+        const percentageDiff = exports.getPercentageDiff(prevAudit.numericValue, nextAudit.numericValue);
         return {
             title: prevAudit.title,
             previousScore: prevAudit.displayValue,

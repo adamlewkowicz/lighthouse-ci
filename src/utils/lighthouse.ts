@@ -1,7 +1,6 @@
 import lighthouse from 'lighthouse';
 import * as chromeLauncher from 'chrome-launcher';
 import { LighthouseResult } from './types';
-import percentageChange from 'percent-change';
 
 async function getLighthouseResult(url: string) {
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
@@ -29,8 +28,7 @@ export const getLighthouseResults = async (
 export const getPercentageDiff = (previous: number, next: number) => {
   const increase = next - previous;
   return (increase / previous) * 100;
-
-  return percentageChange(previous, next, false);
+  // return percentageChange(previous, next, false);
 };
 
 const MAX_DIFFERENCE_THRESHOLD = 5;
@@ -53,7 +51,10 @@ export const getLhrComparison = (
     const nextAudit = nextResult.audits[field];
     console.log({ prevAudit, nextAudit });
 
-    const percentageDiff = getPercentageDiff(prevAudit.score, nextAudit.score);
+    const percentageDiff = getPercentageDiff(
+      prevAudit.numericValue,
+      nextAudit.numericValue,
+    );
 
     return {
       title: prevAudit.title,
