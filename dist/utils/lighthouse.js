@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLighthouseResultsTable = exports.getLhrComparison = exports.getPercentageDiff = exports.getLighthouseResults = void 0;
+exports.getPercentageDiff = exports.getMarkdownResults = exports.getLighthouseResults = void 0;
 const lighthouse_1 = __importDefault(require("lighthouse"));
 const chromeLauncher = __importStar(require("chrome-launcher"));
 async function getLighthouseResult(url) {
@@ -43,10 +43,22 @@ const getLighthouseResults = async (urls) => {
     return results;
 };
 exports.getLighthouseResults = getLighthouseResults;
+const getMarkdownResults = (urls, resultsBase, resultsCurrent) => {
+    const markdownResult = urls.reduce((markdown, url, index) => {
+        const reports = getLhrComparison(resultsBase[index], resultsCurrent[index]);
+        const table = getLighthouseResultsTable(reports);
+        markdown += `Lighthouse result for *${url}*
+    ${table}
+    \n\n
+    `.trim();
+        return markdown;
+    }, '');
+    return markdownResult;
+};
+exports.getMarkdownResults = getMarkdownResults;
 const getPercentageDiff = (previous, next) => {
     const increase = next - previous;
     return (increase / previous) * 100;
-    // return percentageChange(previous, next, false);
 };
 exports.getPercentageDiff = getPercentageDiff;
 const MAX_DIFFERENCE_THRESHOLD = 5;
@@ -83,7 +95,6 @@ const getLhrComparison = (previousResult, nextResult) => {
     normalizedResult.unshift(performanceResult);
     return normalizedResult;
 };
-exports.getLhrComparison = getLhrComparison;
 const tableHeaderTitles = ['Metric', 'Base', 'Current', '+/- %', ''];
 const getLighthouseResultsTable = (reports) => `
   | ${tableHeaderTitles.join(' | ')} |
@@ -114,4 +125,3 @@ const getLighthouseResultsTable = (reports) => `
     .map((columns) => `| ${columns.join(' | ')} |`)
     .join('\n')}
 `;
-exports.getLighthouseResultsTable = getLighthouseResultsTable;
