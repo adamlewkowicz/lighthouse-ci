@@ -45,8 +45,8 @@ const getLighthouseResults = async (urls) => {
 };
 exports.getLighthouseResults = getLighthouseResults;
 const getPercentageDiff = (previous, next) => {
-    // const increase = next - previous;
-    // return (increase / previous) * 100;
+    const increase = next - previous;
+    return (increase / previous) * 100;
     return percent_change_1.default(previous, next, false);
 };
 exports.getPercentageDiff = getPercentageDiff;
