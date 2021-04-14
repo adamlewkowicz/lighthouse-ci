@@ -117,7 +117,7 @@ const getLighthouseResultsTable = (reports: Item[]) => `
       } else {
         const formattedDifference = `${report.difference > 0 ? '+' : ''}${
           report.difference
-        }`;
+        }%`;
 
         if (report.isAboveThreshold) {
           formattedResult = `**${formattedDifference}**`;
