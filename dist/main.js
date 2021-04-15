@@ -9,8 +9,7 @@ const kill_port_1 = __importDefault(require("kill-port"));
 const lighthouse_1 = require("./utils/lighthouse");
 const main_1 = require("./utils/main");
 async function run() {
-    const { urls: _urls, token, maxPercentageThreshold } = main_1.getActionInputs();
-    const urls = [_urls[0]];
+    const { urls, token, maxPercentageThreshold } = main_1.getActionInputs();
     const octokit = github_1.getOctokit(token);
     const killServer = () => kill_port_1.default(3000, 'tcp');
     await main_1.installDependencies();
