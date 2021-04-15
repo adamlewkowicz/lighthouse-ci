@@ -11,8 +11,7 @@ import {
 } from './utils/main';
 
 async function run() {
-  const { urls: _urls, token, maxPercentageThreshold } = getActionInputs();
-  const urls = [_urls[0]];
+  const { urls, token, maxPercentageThreshold } = getActionInputs();
 
   const octokit = getOctokit(token);
 
