@@ -34,7 +34,9 @@ export const getMarkdownResults = (
     const reports = getLhrComparison(resultsBase[index], resultsCurrent[index]);
     const table = getLighthouseResultsTable(reports);
 
-    markdown += `Lighthouse result for *${url}*
+    markdown += `
+    \n
+    Lighthouse result for *${url}*
     ${table}
     \n\n
     `.trim();
