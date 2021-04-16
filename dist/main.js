@@ -14,6 +14,8 @@ async function run() {
     const killServer = () => kill_port_1.default(3000, 'tcp');
     await main_1.installDependencies();
     await main_1.buildAndServe();
+    // first cold run
+    await lighthouse_1.getLighthouseResults(urls);
     const lighthouseResultsBase = await lighthouse_1.getLighthouseResults(urls);
     await killServer();
     await main_1.checkoutBaseBranch();

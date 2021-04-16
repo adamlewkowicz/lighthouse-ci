@@ -19,6 +19,8 @@ async function run() {
 
   await installDependencies();
   await buildAndServe();
+  // first cold run
+  await getLighthouseResults(urls);
   const lighthouseResultsBase = await getLighthouseResults(urls);
 
   await killServer();
