@@ -39,7 +39,7 @@ export const getMarkdownResults = (
     Lighthouse result for *${url}*
     ${table}
     \n\n
-    `.trim();
+    `;
 
     return markdown;
   }, '');
