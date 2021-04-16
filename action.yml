@@ -8,6 +8,9 @@ inputs:
     description: 'The npm-script to run that builds and serves your project'
     default: 'build:serve'
     required: true
+  urls:
+    description: 'Url addresses that the lighthouse test should be run against'
+    required: true
 runs:
   using: 'node12'
   main: './dist/main.js'
