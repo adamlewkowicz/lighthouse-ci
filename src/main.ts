@@ -11,33 +11,32 @@ import {
 } from './utils/main';
 
 async function run() {
-  const { urls, token, maxPercentageThreshold } = getActionInputs();
+  const {
+    urls,
+    token,
+    maxPercentageThreshold,
+    minPerformanceScore,
+  } = getActionInputs();
 
   const octokit = getOctokit(token);
 
-  const killServer = () => killPort(3000, 'tcp');
-
-  await installDependencies();
-  await buildAndServe();
-  // first cold run
-  await getLighthouseResults(urls);
-  const lighthouseResultsBase = await getLighthouseResults(urls);
-
-  await killServer();
-  await checkoutBaseBranch();
-
-  await installDependencies();
-  await buildAndServe();
-  const lighthouseResultsCurrent = await getLighthouseResults(urls);
+  const lighthouseResults = await getLighthouseResults(urls);
 
   const markdownResult = getMarkdownResults(
     urls,
-    lighthouseResultsBase,
-    lighthouseResultsCurrent,
+    lighthouseResults,
+    lighthouseResults,
   );
   await createComment(octokit, markdownResult);
 
-  await killServer();
+  // lighthouseResults.forEach(result => {
+  //   if (result.categories.performance.score < minPerformanceScore) {
+  //     throw new Error('')
+  //   }
+  // });
+  // lighthouseResults[0].categories.performance.score;
+  // if () {
+  // }
 }
 
 run().catch((error) => {

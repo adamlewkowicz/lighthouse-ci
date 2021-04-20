@@ -16,6 +16,7 @@ const getActionInputs = () => ({
     maxPercentageThreshold: Number(core_1.getInput('max-percentage-threshold', {
     // required: true,
     })),
+    minPerformanceScore: Number(core_1.getInput('min-performance-score')),
 });
 exports.getActionInputs = getActionInputs;
 const installDependencies = () => exec_1.exec('npm ci');

@@ -18,6 +18,7 @@ export const getActionInputs = () => ({
       // required: true,
     }),
   ),
+  minPerformanceScore: Number(getInput('min-performance-score')),
 });
 
 export const installDependencies = () => exec('npm ci');
