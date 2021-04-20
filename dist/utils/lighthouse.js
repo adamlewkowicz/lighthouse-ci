@@ -63,7 +63,6 @@ const getPercentageDiff = (previous, next) => {
     return (increase / previous) * 100;
 };
 exports.getPercentageDiff = getPercentageDiff;
-const MAX_DIFFERENCE_THRESHOLD = 5;
 const getLhrComparison = (previousResult, nextResult) => {
     const fields = [
         'first-contentful-paint',

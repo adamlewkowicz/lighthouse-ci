@@ -52,8 +52,6 @@ export const getPercentageDiff = (previous: number, next: number) => {
   return (increase / previous) * 100;
 };
 
-const MAX_DIFFERENCE_THRESHOLD = 5;
-
 const getLhrComparison = (
   previousResult: LighthouseResult,
   nextResult: LighthouseResult,

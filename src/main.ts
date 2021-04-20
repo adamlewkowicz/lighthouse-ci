@@ -20,10 +20,10 @@ async function run() {
 
   const octokit = getOctokit(token);
 
-  const lighthouseResults = await getLighthouseResults(urls);
+  const lighthouseResults = await getLighthouseResults([urls[0]]);
 
   const markdownResult = getMarkdownResults(
-    urls,
+    [urls[0]],
     lighthouseResults,
     lighthouseResults,
   );
