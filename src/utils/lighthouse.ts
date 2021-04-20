@@ -36,10 +36,9 @@ export const getMarkdownResults = (
     const table = getLighthouseResultsTable(reports);
 
     markdown += `\n<details>
-    <summary>Lighthouse result for *${url}*</summary>
+    <summary><p>Lighthouse result for *${url}*</p></summary>
     \n${table}
-    \n
-    </details>`;
+    \n</details>`;
 
     return markdown;
   }, '');
