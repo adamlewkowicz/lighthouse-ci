@@ -7,8 +7,8 @@ const main_1 = require("./utils/main");
 async function run() {
     const { urls, token, maxPercentageThreshold, minPerformanceScore, } = main_1.getActionInputs();
     const octokit = github_1.getOctokit(token);
-    const lighthouseResults = await lighthouse_1.getLighthouseResults([urls[0]]);
-    const markdownResult = lighthouse_1.getMarkdownResults([urls[0]], lighthouseResults, lighthouseResults);
+    const lighthouseResults = await lighthouse_1.getLighthouseResults(urls);
+    const markdownResult = lighthouse_1.getMarkdownResults(urls, lighthouseResults, lighthouseResults);
     await main_1.createComment(octokit, markdownResult);
     // lighthouseResults.forEach(result => {
     //   if (result.categories.performance.score < minPerformanceScore) {
