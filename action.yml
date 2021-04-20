@@ -11,6 +11,9 @@ inputs:
   urls:
     description: 'Url addresses that the lighthouse test should be run against'
     required: true
+  min-performance-score:
+    description: 'Minimum performance score'
+    required: true
 runs:
   using: 'node12'
   main: './dist/main.js'

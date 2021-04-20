@@ -1,6 +1,7 @@
 import lighthouse from 'lighthouse';
 import * as chromeLauncher from 'chrome-launcher';
 import { LighthouseResult } from './types';
+import { getActionInputs } from './main';
 
 async function getLighthouseResult(url: string) {
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
@@ -34,10 +35,11 @@ export const getMarkdownResults = (
     const reports = getLhrComparison(resultsBase[index], resultsCurrent[index]);
     const table = getLighthouseResultsTable(reports);
 
-    markdown += `\nLighthouse result for *${url}*
+    markdown += `\n<details>
+    <summary>Lighthouse result for *${url}*</summary>
     \n${table}
     \n
-    `;
+    </details>`;
 
     return markdown;
   }, '');
@@ -64,6 +66,7 @@ const getLhrComparison = (
     'largest-contentful-paint',
     'cumulative-layout-shift',
   ] as const;
+  const { minPerformanceScore } = getActionInputs();
 
   const normalizedResult = fields.map<Item>((field) => {
     const prevAudit = previousResult.audits[field];
@@ -79,7 +82,7 @@ const getLhrComparison = (
       previousScore: prevAudit.displayValue,
       nextScore: nextAudit.displayValue,
       difference: percentageDiff,
-      isAboveThreshold: percentageDiff > MAX_DIFFERENCE_THRESHOLD,
+      isAboveThreshold: null,
     };
   });
 
@@ -90,12 +93,13 @@ const getLhrComparison = (
     ),
   );
 
-  const performanceResult = {
+  const performanceResult: Item = {
     title: 'Performance',
     previousScore: previousResult.categories.performance.score,
     nextScore: nextResult.categories.performance.score,
     difference: performancePercentageDiff,
-    isAboveThreshold: performancePercentageDiff > MAX_DIFFERENCE_THRESHOLD,
+    isAboveThreshold:
+      nextResult.categories.performance.score < minPerformanceScore,
   };
 
   normalizedResult.unshift(performanceResult);
@@ -103,7 +107,7 @@ const getLhrComparison = (
   return normalizedResult;
 };
 
-const tableHeaderTitles = ['Metric', 'Base', 'Current', '+/- %', ''];
+const tableHeaderTitles = ['Metric', 'Score', ''];
 
 const getLighthouseResultsTable = (reports: Item[]) => `
   | ${tableHeaderTitles.join(' | ')} |
@@ -111,6 +115,15 @@ const getLighthouseResultsTable = (reports: Item[]) => `
   ${reports
     .map((report) => {
       let formattedResult: string;
+      let reportCheck = '';
+
+      if (report.isAboveThreshold !== null) {
+        if (report.isAboveThreshold) {
+          reportCheck = '🚫';
+        } else {
+          reportCheck = '✅';
+        }
+      }
 
       if (report.difference === 0) {
         formattedResult = '--';
@@ -126,13 +139,7 @@ const getLighthouseResultsTable = (reports: Item[]) => `
         }
       }
 
-      return [
-        report.title,
-        report.previousScore,
-        report.nextScore,
-        formattedResult,
-        report.isAboveThreshold ? '🚫' : '✅',
-      ];
+      return [report.title, report.previousScore, reportCheck];
     })
     .map((columns) => `| ${columns.join(' | ')} |`)
     .join('\n')}
@@ -143,5 +150,5 @@ interface Item {
   previousScore: string | number;
   nextScore: string | number;
   difference: string | number;
-  isAboveThreshold: boolean;
+  isAboveThreshold: boolean | null;
 }
