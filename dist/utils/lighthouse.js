@@ -49,7 +49,7 @@ const getMarkdownResults = (urls, resultsBase, resultsCurrent) => {
         const reports = getLhrComparison(resultsBase[index], resultsCurrent[index]);
         const table = getLighthouseResultsTable(reports);
         markdown += `\n<details>
-    <summary><p>Lighthouse result for *${url}*</p></summary>
+    <summary>Lighthouse result for ${url}</summary>
     \n${table}
     \n</details>`;
         return markdown;
